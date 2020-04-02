@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace CourseWork
 {
-    public class Colors
+    public class SomeAbstact
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string specification { get; set; }
     }
 }

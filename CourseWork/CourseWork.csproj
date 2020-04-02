@@ -101,6 +101,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Client.cs" />
+    <Compile Include="Component.cs" />
+    <Compile Include="Departament.cs" />
+    <Compile Include="DirectorInfo.cs" />
+    <Compile Include="Directors.cs" />
+    <Compile Include="Orders.cs" />
+    <Compile Include="Product.cs" />
+    <Compile Include="SomeAbstact.cs" />
+    <Compile Include="Storage.cs" />
+    <Compile Include="WorkerInfo.cs" />
+    <Compile Include="Workers.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

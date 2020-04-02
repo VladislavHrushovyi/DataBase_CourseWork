@@ -3,8 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local ="clr-namespace:CourseWork"
-        xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="1000" Background="White" Loaded="Window_Loaded" Closing="WindowClosing">
     <Grid>
@@ -19,13 +17,13 @@
                         <ColumnDefinition Width="26*"/>
                         <ColumnDefinition Width="943*"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid HorizontalAlignment="Left" Height="342" VerticalAlignment="Top" Width="969" Margin="0,0,-0.2,0" Background="White" ColumnWidth="100" Grid.ColumnSpan="2">
+                    <DataGrid  HorizontalAlignment="Left" Height="342" VerticalAlignment="Top" Width="969" Margin="0,0,-0.2,0" Background="White" ColumnWidth="100" Grid.ColumnSpan="2">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Id Product"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Name Product"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Amount"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Cost"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Client name"/>
+                            <DataGridTextColumn Binding="{Binding Id}"  Header="Id Product"/>
+                            <DataGridTextColumn Binding="{Binding Name}"  Header="Name Product"/>
+                            <DataGridTextColumn Binding="{Binding Amount}"  Header="Amount"/>
+                            <DataGridTextColumn Binding="{Binding Price}"  Header="Cost"/>
+                            <DataGridTextColumn Binding="{Binding Client_Name}"  Header="Client name"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <ComboBox Text="Choose client" x:Name="CB_client" HorizontalAlignment="Left" Margin="289.4,347,0,0" VerticalAlignment="Top" Width="258" Grid.Column="1" Height="27"/>
@@ -43,19 +41,6 @@
                     <TabControl HorizontalAlignment="Left" Height="422" VerticalAlignment="Top" Width="977" Grid.ColumnSpan="2" Margin="0,0,-0.2,-0.4">
                         <TabItem Header="Orders">
                             <Grid Background="#FFE5E5E5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="26*"/>
-                                    <ColumnDefinition Width="943*"/>
-                                </Grid.ColumnDefinitions>
-                                <DataGrid HorizontalAlignment="Left" Height="209" VerticalAlignment="Top" Width="502" Background="White" ColumnWidth="100" Grid.Column="1" Margin="170.6,0,0,0">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Id"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Id product"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Amount"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Cost orders"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Client id"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
                                 <Rectangle Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="159" Margin="170.6,223,0,0" Stroke="Black" VerticalAlignment="Top" Width="502"/>
                                 <Label Content="Choose operation" HorizontalAlignment="Left" Margin="207.6,220,0,0" VerticalAlignment="Top" Width="108" Grid.Column="1"/>
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Right" Margin="0,223,519.2,0" VerticalAlignment="Top" Width="105" AutomationProperties.Name="CB_operationClient"/>
@@ -72,13 +57,13 @@
                                         <ColumnDefinition Width="26*"/>
                                         <ColumnDefinition Width="943*"/>
                                     </Grid.ColumnDefinitions>
-                                    <DataGrid HorizontalAlignment="Left" Height="209" VerticalAlignment="Top" Width="502" Background="White" ColumnWidth="100" Grid.Column="1" Margin="170.6,0,0,0" AutomationProperties.Name="OrdersTable">
+                                    <DataGrid HorizontalAlignment="Left" ItemsSource="{Binding Path = temp}" Height="209" VerticalAlignment="Top" Width="502" Background="White" ColumnWidth="100" Grid.Column="1" Margin="170.6,9,0,0" AutomationProperties.Name="ColorsTable" x:Name="OrdersTable">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Id"/>
-                                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Id product"/>
-                                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Amount"/>
-                                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Cost orders"/>
-                                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Client id"/>
+                                            <DataGridTextColumn Binding="{Binding Path = Id}"  Header="Id"/>
+                                            <DataGridTextColumn Binding="{Binding Path =  Product_id}"  Header="Id product"/>
+                                            <DataGridTextColumn Binding="{Binding Path = Amount}"  Header="Amount"/>
+                                            <DataGridTextColumn Binding="{Binding Path = Cost_Order}"  Header="Cost orders"/>
+                                            <DataGridTextColumn Binding="{Binding Path = Client_id}"  Header="Client id"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                     <Rectangle Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="159" Margin="170.6,223,0,0" Stroke="Black" VerticalAlignment="Top" Width="502"/>
@@ -107,14 +92,14 @@
                                     <ColumnDefinition Width="26*"/>
                                     <ColumnDefinition Width="943*"/>
                                 </Grid.ColumnDefinitions>
-                                <DataGrid HorizontalAlignment="Left" Height="224" VerticalAlignment="Top" Width="702" Background="White" ColumnWidth="100" Grid.ColumnSpan="2" AutomationProperties.Name="ClientTable">
+                                <DataGrid   HorizontalAlignment="Left" Height="224" VerticalAlignment="Top" Width="702" Background="White" ColumnWidth="100" Grid.ColumnSpan="2" AutomationProperties.Name="ClientTable" x:Name="ClientTable">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="First name"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Second name"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Last name"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Phone"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Email"/>
+                                        <DataGridTextColumn Binding="{Binding Path = Id}"  Header="ID"/>
+                                        <DataGridTextColumn Binding="{Binding Path = FirstName}"  Header="First name"/>
+                                        <DataGridTextColumn Binding="{Binding Path = SecondName}"  Header="Second name"/>
+                                        <DataGridTextColumn Binding="{Binding Path = LastName}"  Header="Last name"/>
+                                        <DataGridTextColumn Binding="{Binding Path = Phone}"  Header="Phone"/>
+                                        <DataGridTextColumn Binding="{Binding Path = E_mail}"  Header="Email"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="167" Margin="0,228,0,-0.6" Stroke="Black" VerticalAlignment="Top" Width="702" Grid.ColumnSpan="2"/>
@@ -140,27 +125,23 @@
                                 <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="515.6,280,0,0" VerticalAlignment="Top" Width="97" Height="85" AutomationProperties.Name="BTN_doneClient"/>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Colors" Height="23" Margin="-2.4,-2,-2,-0.2" VerticalAlignment="Bottom" AutomationProperties.Name="ColorsTable">
+                        <TabItem Header="Colors" Height="23" Margin="-2.4,-2,-2,-0.2" VerticalAlignment="Bottom">
                             <Grid Background="#FFE5E5E5">
-                                <Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions >
                                     <ColumnDefinition Width="26*"/>
                                     <ColumnDefinition Width="943*"/>
                                 </Grid.ColumnDefinitions>
-                                <DataGrid x:Name="ColorsTable" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
+                                <DataGrid ItemsSource="{Binding temp}" AutoGenerateColumns="False" x:Name="ColorsTable" HorizontalGridLinesBrush="DarkGray"
                                             RowBackground="LightGray" AlternatingRowBackground="White" Grid.ColumnSpan="2" Margin="0,0,624.2,0">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="ID" Binding="{Binding Path=ID}" Width="100" />
-                                        <DataGridHyperlinkColumn Header="Name" Binding="{Binding Path=Name}" Width="100" />
-                                        <DataGridTextColumn Header="Specification" Binding="{Binding Path=Specification}" Width="100" />
+                                        <DataGridTextColumn Header="ID" Binding="{Binding id}" Width="100" />
+                                        <DataGridTextColumn Header="Name" Binding="{Binding  name}" Width="100" />
+                                        <DataGridTextColumn Header="Specification" Binding="{Binding  specification}" Width="100" />
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <Rectangle Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="182" Margin="325.6,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="609"/>
                                 <Label Content="Choose operation" HorizontalAlignment="Left" Margin="357.6,7,0,0" VerticalAlignment="Top" Grid.Column="1"/>
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="461.6,10,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_operationColors" x:Name="CB_operationColors">
-                                    <ComboBoxItem Content="ADD"/>
-                                    <ComboBoxItem Content="UPDATE"/>
-                                    <ComboBoxItem Content="SELECT"/>
-                                    <ComboBoxItem Content="DELETE"/>
                                 </ComboBox>
                                 <Label Content="Color" HorizontalAlignment="Left" Margin="628.6,7,0,0" VerticalAlignment="Top" Grid.Column="1" AutomationProperties.Name="Color"/>
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="671.6,10,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_chooseColor" x:Name="CB_chooseColors" DropDownClosed="CB_chooseColors_DropDownClosed"/>
@@ -171,17 +152,17 @@
                                 <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="720.6,79,0,0" VerticalAlignment="Top" Width="193" Height="55" AutomationProperties.Name="BTN_doneColors" Click="ColorsDone" x:Name="BTN_doneColors"/>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Departament" AutomationProperties.Name="DepartamentTable">
+                        <TabItem Header="Departament">
                             <Grid Background="#FFE5E5E5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="26*"/>
                                     <ColumnDefinition Width="943*"/>
                                 </Grid.ColumnDefinitions>
-                                <DataGrid HorizontalAlignment="Left" Height="208" VerticalAlignment="Top" Width="302" Background="White" ColumnWidth="100" Grid.Column="1" Margin="239.6,0,0,0">
+                                <DataGrid HorizontalAlignment="Left" Height="208" VerticalAlignment="Top" Width="302" Background="White" ColumnWidth="100" Grid.Column="1" Margin="239.6,0,0,0" x:Name="DepartamentTable">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Id"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Name"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Storage id"/>
+                                        <DataGridTextColumn Binding="{Binding Id}"  Header="Id"/>
+                                        <DataGridTextColumn Binding="{Binding Name}"  Header="Name"/>
+                                        <DataGridTextColumn Binding="{Binding Storage_id}"  Header="Storage id"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <Rectangle Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="169" Margin="173.6,213,0,0" Stroke="Black" VerticalAlignment="Top" Width="436"/>
@@ -202,22 +183,22 @@
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="323.6,313,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_chooseStorageDepartament"/>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Worker info" AutomationProperties.Name="WorkerInfoTable">
+                        <TabItem Header="Worker info" >
                             <Grid Background="#FFE5E5E5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="26*"/>
                                     <ColumnDefinition Width="0*"/>
                                     <ColumnDefinition Width="945*"/>
                                 </Grid.ColumnDefinitions>
-                                <DataGrid HorizontalAlignment="Left" Height="212" VerticalAlignment="Top" Width="803" Background="White" ColumnWidth="100" Grid.ColumnSpan="3">
+                                <DataGrid HorizontalAlignment="Left" Height="212" VerticalAlignment="Top" Width="803" Background="White" ColumnWidth="100" Grid.ColumnSpan="3" x:Name="WorkerInfoTable">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Name"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Second name"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Last name"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Date born"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="E-mail"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Phone"/>
+                                        <DataGridTextColumn Binding="{Binding Id}"  Header="ID"/>
+                                        <DataGridTextColumn Binding="{Binding FirstName}"  Header="Name"/>
+                                        <DataGridTextColumn Binding="{Binding SecondName}"  Header="Second name"/>
+                                        <DataGridTextColumn Binding="{Binding LastName}"  Header="Last name"/>
+                                        <DataGridTextColumn Binding="{Binding DateBorn}"  Header="Date born"/>
+                                        <DataGridTextColumn Binding="{Binding E_mail}"  Header="E-mail"/>
+                                        <DataGridTextColumn Binding="{Binding Phone}"  Header="Phone"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="167" Margin="0,217,0,0" Stroke="Black" VerticalAlignment="Top" Width="803" Grid.ColumnSpan="3"/>
@@ -245,20 +226,20 @@
                                 <Button Content="DONE" Grid.Column="2" HorizontalAlignment="Left" Margin="587.6,246,0,0" VerticalAlignment="Top" Width="123" Height="111" AutomationProperties.Name="BTN_doneWorkerInfo"/>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Product" AutomationProperties.Name="ProductTable">
+                        <TabItem Header="Product">
                             <Grid Background="#FFE5E5E5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="26*"/>
                                     <ColumnDefinition Width="943*"/>
                                 </Grid.ColumnDefinitions>
-                                <DataGrid HorizontalAlignment="Left" Height="191" VerticalAlignment="Top" Width="601" Background="White" ColumnWidth="100" Grid.Column="1" Margin="123.6,0,0,0">
+                                <DataGrid HorizontalAlignment="Left" Height="191" VerticalAlignment="Top" Width="601" Background="White" ColumnWidth="100" Grid.Column="1" Margin="123.6,0,0,0" x:Name="ProductTable">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Name"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Description"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID color"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID departament"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Price"/>
+                                        <DataGridTextColumn Binding="{Binding Id}"  Header="ID"/>
+                                        <DataGridTextColumn Binding="{Binding Name}"  Header="Name"/>
+                                        <DataGridTextColumn Binding="{Binding Description}"  Header="Description"/>
+                                        <DataGridTextColumn Binding="{Binding Color_id}"  Header="ID color"/>
+                                        <DataGridTextColumn Binding="{Binding Departament_id}"  Header="ID departament"/>
+                                        <DataGridTextColumn Binding="{Binding Price}"  Header="Price"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <Rectangle Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="171" Margin="123.6,211,0,0" Stroke="Black" VerticalAlignment="Top" Width="601"/>
@@ -284,19 +265,19 @@
                                 <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="485.6,340,0,0" VerticalAlignment="Top" Width="212" Height="29" AutomationProperties.Name="BTN_doneProduct"/>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Workers" AutomationProperties.Name="ProductWorkers">
+                        <TabItem Header="Workers">
                             <Grid Background="#FFE5E5E5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="13*"/>
                                     <ColumnDefinition Width="328*"/>
                                     <ColumnDefinition Width="144*"/>
                                 </Grid.ColumnDefinitions>
-                                <DataGrid HorizontalAlignment="Left" Height="212" VerticalAlignment="Top" Width="401" Background="White" ColumnWidth="100" Grid.Column="1" Margin="255.6,0,0,0">
+                                <DataGrid HorizontalAlignment="Left" Height="212" VerticalAlignment="Top" Width="401" Background="White" ColumnWidth="100" Grid.Column="1" Margin="255.6,0,0,0" x:Name="WorkersTable">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Worker info"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Departament id"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Position"/>
+                                        <DataGridTextColumn Binding="{Binding Id}"  Header="ID"/>
+                                        <DataGridTextColumn Binding="{Binding WorkerInfo_id}"  Header="Worker info"/>
+                                        <DataGridTextColumn Binding="{Binding Departament_id}"  Header="Departament id"/>
+                                        <DataGridTextColumn Binding="{Binding Position}"  Header="Position"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <Rectangle Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="133" Margin="255.6,238,0,0" Stroke="Black" VerticalAlignment="Top" Width="401"/>
@@ -318,17 +299,17 @@
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="526.6,282,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_positionWorker" x:Name="TB_positionWorker"/>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Director" AutomationProperties.Name="DirectorTable">
+                        <TabItem Header="Director">
                             <Grid Background="#FFE5E5E5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="26*"/>
                                     <ColumnDefinition Width="943*"/>
                                 </Grid.ColumnDefinitions>
-                                <DataGrid HorizontalAlignment="Left" Height="184" VerticalAlignment="Top" Width="301" Background="White" ColumnWidth="100" Grid.Column="1" Margin="219.6,0,0,0">
+                                <DataGrid HorizontalAlignment="Left" Height="184" VerticalAlignment="Top" Width="301" Background="White" ColumnWidth="100" Grid.Column="1" Margin="219.6,0,0,0" x:Name="DirectorTable">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Director info"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Departament"/>
+                                        <DataGridTextColumn Binding="{Binding Id}"  Header="ID"/>
+                                        <DataGridTextColumn Binding="{Binding DirectorInfo_id}"  Header="Director info"/>
+                                        <DataGridTextColumn Binding="{Binding Departament_id}"  Header="Departament"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <Rectangle Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="162" Margin="175.6,210,0,0" Stroke="Black" VerticalAlignment="Top" Width="434"/>
@@ -348,21 +329,21 @@
                                 <Label Content="Departament" Grid.Column="1" HorizontalAlignment="Left" Margin="200.6,317,0,0" VerticalAlignment="Top"/>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Director info" AutomationProperties.Name="DirectorInfoTable">
+                        <TabItem Header="Director info">
                             <Grid Background="#FFE5E5E5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="26*"/>
                                     <ColumnDefinition Width="943*"/>
                                 </Grid.ColumnDefinitions>
-                                <DataGrid HorizontalAlignment="Left" Height="210" VerticalAlignment="Top" Width="803" Background="White" ColumnWidth="100" Grid.ColumnSpan="2">
+                                <DataGrid HorizontalAlignment="Left" Height="210" VerticalAlignment="Top" Width="803" Background="White" ColumnWidth="100" Grid.ColumnSpan="2" x:Name="DirectorInfoTable">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Name"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Second name"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Last name"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Date born"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Phone"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="E-mail"/>
+                                        <DataGridTextColumn Binding="{Binding Id}"  Header="ID"/>
+                                        <DataGridTextColumn Binding="{Binding FirstName}"  Header="Name"/>
+                                        <DataGridTextColumn Binding="{Binding SecondName}"  Header="Second name"/>
+                                        <DataGridTextColumn Binding="{Binding LastName}"  Header="Last name"/>
+                                        <DataGridTextColumn Binding="{Binding DateBorn}"  Header="Date born"/>
+                                        <DataGridTextColumn Binding="{Binding Phone}"  Header="Phone"/>
+                                        <DataGridTextColumn Binding="{Binding E_mail}"  Header="E-mail"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="167" Margin="0,217,0,0" Stroke="Black" VerticalAlignment="Top" Width="803" Grid.ColumnSpan="2"/>
@@ -390,16 +371,16 @@
                                 <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="593.6,246,0,0" VerticalAlignment="Top" Width="127" Height="114" AutomationProperties.Name="BTN_doneDirectorInfo"/>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Storage" AutomationProperties.Name="StorageTable">
+                        <TabItem Header="Storage">
                             <Grid Background="#FFE5E5E5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="26*"/>
                                     <ColumnDefinition Width="943*"/>
                                 </Grid.ColumnDefinitions>
-                                <DataGrid HorizontalAlignment="Left" Height="170" VerticalAlignment="Top" Width="303" Background="White" ColumnWidth="100" Grid.Column="1" Margin="249.6,10,0,0">
+                                <DataGrid HorizontalAlignment="Left" Height="170" VerticalAlignment="Top" Width="303" Background="White" ColumnWidth="100" Grid.Column="1" Margin="249.6,10,0,0" x:Name="StorageTable">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Name"/>
+                                        <DataGridTextColumn Binding="{Binding Id}"  Header="ID"/>
+                                        <DataGridTextColumn Binding="{Binding Name}"  Header="Name"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <Rectangle Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="165" Margin="175.6,200,0,0" Stroke="Black" VerticalAlignment="Top" Width="434"/>
@@ -418,20 +399,20 @@
                                 <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="489.6,276,0,0" VerticalAlignment="Top" Width="75" Height="41" AutomationProperties.Name="BTN_doneStorage"/>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Component" AutomationProperties.Name="ComponentTable">
+                        <TabItem Header="Component">
                             <Grid Background="#FFE5E5E5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="26*"/>
                                     <ColumnDefinition Width="943*"/>
                                 </Grid.ColumnDefinitions>
-                                <DataGrid HorizontalAlignment="Left" Height="195" VerticalAlignment="Top" Width="668" Background="White" ColumnWidth="100" Grid.Column="1" Margin="65.6,2,0,0">
+                                <DataGrid HorizontalAlignment="Left" Height="195" VerticalAlignment="Top" Width="668" Background="White" ColumnWidth="100" Grid.Column="1" Margin="65.6,2,0,0" x:Name="ComponentTable">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Name"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Amount"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Color"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Type"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Storage"/>
+                                        <DataGridTextColumn Binding="{Binding Id}"  Header="ID"/>
+                                        <DataGridTextColumn Binding="{Binding Name}"  Header="Name"/>
+                                        <DataGridTextColumn Binding="{Binding Amount}"  Header="Amount"/>
+                                        <DataGridTextColumn Binding="{Binding Color_id}"  Header="Color"/>
+                                        <DataGridTextColumn Binding="{Binding Type}"  Header="Type"/>
+                                        <DataGridTextColumn Binding="{Binding Storage_id}"  Header="Storage"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <Rectangle Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="174" Margin="175.6,200,0,0" Stroke="Black" VerticalAlignment="Top" Width="434"/>
