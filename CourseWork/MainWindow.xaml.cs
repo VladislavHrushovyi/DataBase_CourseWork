@@ -1,30 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Data.SqlClient;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Npgsql;
-using NpgsqlTypes;
 
 namespace CourseWork
 {
     public partial class MainWindow : Window
-    {
+    { 
+        List<string> operation = new List<string>() { "ADD", "SELECT", "UPDATE", "DELETE" };
+
         SqlConnection SqlConnection;
-        SqlDataReader reader;
-        SqlCommand sqlCommand;
-        List<string> operation = new List<string>() { "ADD", "SELECT", "INSERT", "DELETE" };
+        string globalID = null;
+        string globalName = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -42,7 +30,6 @@ namespace CourseWork
                 string connection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=FornitureManufacture;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
                 
                 SqlConnection = new SqlConnection(connection);
-                await SqlConnection.OpenAsync();
                 await DataInAllComboBox();
                 await FillAllTable();
                 await FillAllOperationComboBox();
@@ -56,66 +43,463 @@ namespace CourseWork
         private async Task FillAllOperationComboBox()
         {
             CB_operationColors.ItemsSource = operation;
+            CB_operationClient.ItemsSource = operation;
+            CB_operationComponent.ItemsSource = operation;
+            CB_operationDirector.ItemsSource = operation;
+            CB_operationDirectorInfo.ItemsSource = operation;
+            CB_operationOrder.ItemsSource = operation;
+            CB_operationProduct.ItemsSource = operation;
+            CB_operationStorage.ItemsSource = operation;
+            CB_operationWorker.ItemsSource = operation;
+            CB_operationWorkerInfo.ItemsSource = operation;
+            CB_operationDepartament.ItemsSource = operation;
         }
 
+        //ВСЕ ШО ЗВ'ЯЗАНО З COLORS_TABLE #########################################
         private async void ColorsDone(object sender, RoutedEventArgs e)
         {
-            if (CB_operationColors.SelectedItem.ToString() == "ADD")
+            await SqlConnection.OpenAsync();
+            try
             {
-                await FillAllTable();
-                await DataInAllComboBox();
-            }
-            else if (CB_operationColors.SelectedItem.ToString() == "SELECT")
-            {
-            }
-            else if (CB_operationColors.SelectedItem.ToString() == "UPDATE")
-            {
+                if (CB_operationColors.SelectedItem.ToString() == "ADD")
+                {
+                    SqlCommand sqlCommand;
+                    sqlCommand = new SqlCommand("INSERT INTO [Colors] (Name, Description)VALUES(@Name, @Description)", SqlConnection);
+                    sqlCommand.Parameters.AddWithValue("Name", TB_nameColors.Text);
+                    sqlCommand.Parameters.AddWithValue("Description", TB_specificationColors.Text);
+                    await sqlCommand.ExecuteNonQueryAsync();
+                    SqlConnection.Close();
 
-            }
-            else if (CB_operationColors.SelectedItem.ToString() == "DELETE")
-            {
+                    await RefreshColorsTable();
+                    await DataInAllComboBox();
+                }
+                else if (CB_operationColors.SelectedItem.ToString() == "SELECT")
+                {
+                    SqlDataReader reader;
+                    SqlCommand sqlCommand;
+                    List<Colors> colorsTable = new List<Colors>();
+                    sqlCommand = new SqlCommand("SELECT * FROM [Colors] WHERE id = " + globalID, SqlConnection);
+                    reader = await sqlCommand.ExecuteReaderAsync();
+                    while (await reader.ReadAsync())
+                    {
+                        colorsTable.Add(new Colors()
+                        {
+                            id = Convert.ToInt32(globalID),
+                            name = reader["Name"].ToString(),
+                            specification = reader["Description"].ToString()
+                        });
+                    }
+                    ColorsTable.ItemsSource = colorsTable;
+                    reader.Close();
 
+                    SqlConnection.Close();
+                }
+                else if (CB_operationColors.SelectedItem.ToString() == "UPDATE")
+                {
+                    SqlCommand sqlCommand;
+                    sqlCommand = new SqlCommand("UPDATE [Colors] SET [Name]=@Name, [Description]=@Description WHERE [Id]=@Id", SqlConnection);
+
+                    sqlCommand.Parameters.AddWithValue("Name", TB_nameColors.Text);
+                    sqlCommand.Parameters.AddWithValue("Description", TB_specificationColors.Text);
+                    sqlCommand.Parameters.AddWithValue("Id", globalID);
+
+                    await sqlCommand.ExecuteNonQueryAsync();
+                    SqlConnection.Close();
+
+                    await RefreshColorsTable();
+                    await DataInAllComboBox();
+
+                }
+                else if (CB_operationColors.SelectedItem.ToString() == "DELETE")
+                {
+                    SqlCommand sqlCommand;
+                    sqlCommand = new SqlCommand("DELETE FROM [Colors] WHERE id = " + globalID, SqlConnection);
+
+                    await sqlCommand.ExecuteNonQueryAsync();
+                    SqlConnection.Close();
+
+                    await RefreshColorsTable();
+                    await DataInAllComboBox();
+
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-
-        private async void RefreshColors()
+        private async void CB_chooseColors_DropDownClosed(object sender, EventArgs e)
         {
-            
+
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            try
+            {
+                globalID = GetIndexFromCombpBox(CB_chooseColors.SelectedItem.ToString());
+                sqlCommand = new SqlCommand("SELECT Name,Description FROM [Colors] WHERE Id = " + globalID, SqlConnection);
+                reader = await sqlCommand.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    TB_nameColors.Text = reader[0].ToString();
+                    TB_specificationColors.Text = reader[1].ToString();
+                }
+                reader.Close();
+                SqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            SqlConnection.Close();
         }
-
-        /*private async Task ClearAllComboBox()
+        private async Task RefreshColorsTable()
         {
-            CB_personOrder.Items.Clear();
-            CB_personClient.Items.Clear();
-            CB_chooseDepartament.Items.Clear();
-            CB_personWorkerInfo.Items.Clear();
-            CB_selectProduct.Items.Clear();
-            CB_chooseWorker.Items.Clear();
-            CB_chooseDirector.Items.Clear();
-            CB_personDirectorInfo.Items.Clear();
-            CB_Storage.Items.Clear();
-            CB_itemComponent.Items.Clear();
-        }*/
-        private async Task DataInAllComboBox()
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            List<Colors> colorsTable = new List<Colors>();
+            colorsTable.Clear();
+            sqlCommand = new SqlCommand("SELECT * FROM [Colors]", SqlConnection);
+            reader = await sqlCommand.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                colorsTable.Add(new Colors()
+                {
+                    id = Convert.ToInt32(reader["Id"]),
+                    name = reader["Name"].ToString(),
+                    specification = reader["Description"].ToString()
+                });
+            }
+            ColorsTable.ItemsSource = colorsTable;
+            reader.Close();
+            SqlConnection.Close();
+        }
+        //КІНЕЦЬ#################################################################
+
+        //ВСЕ ШО ЗВ'ЯЗАНО З ORDERS_TABLE #########################################
+        private async void OrderDone_BNT(object sender, RoutedEventArgs e)
         {
             try
             {
-                sqlCommand = new SqlCommand("SELECT Client_id FROM [Orders]", SqlConnection);
+            if (CB_operationOrder.SelectedItem.ToString() == "ADD")
+            {
+                SqlCommand sqlCommand;
+                sqlCommand = new SqlCommand("INSERT INTO [Orders] (Product_id, Amount,Cost_Order, Client_id)" +
+                                                "VALUES(@Product_id, @Amount, @Cost_Order, @Client_id)", SqlConnection);
+                sqlCommand.Parameters.AddWithValue("Product_id", Convert.ToInt32(GetIndexFromCombpBox(CB_productOrder.SelectedItem.ToString())));
+                sqlCommand.Parameters.AddWithValue("Amount", TB_amountProductOrder.Text);
+                sqlCommand.Parameters.AddWithValue("Cost_Order", CalculateOrder());
+                sqlCommand.Parameters.AddWithValue("Client_id", GetIndexFromCombpBox(CB_clientProductOrder.SelectedItem.ToString()));
+
+                await SqlConnection.OpenAsync();
+                await sqlCommand.ExecuteNonQueryAsync();
+                SqlConnection.Close();
+
+                await RefreshOrderTable();
+                await DataInAllComboBox();
+            }
+            else if (CB_operationOrder.SelectedItem.ToString() == "SELECT")
+            {
+                SqlDataReader reader;
+                SqlCommand sqlCommand;
+                List<Orders> ordersTable = new List<Orders>();
+                await SqlConnection.OpenAsync();
+                sqlCommand = new SqlCommand("SELECT * FROM [Orders] WHERE id = " + globalID, SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
-                CB_personOrder.Items.Clear();
                 while (await reader.ReadAsync())
                 {
-                    CB_personOrder.Items.Add(reader[0].ToString());
+                    ordersTable.Add(new Orders()
+                    {
+                        Id = reader["Id"].ToString(),
+                        Product_id = reader["Product_id"].ToString(),
+                        Amount = reader["Amount"].ToString(),
+                        Client_id = reader["Client_id"].ToString(),
+                        Cost_Order = reader["Cost_Order"].ToString()
+                    });
+                }
+                OrdersTable.ItemsSource = ordersTable;
+                reader.Close();
+                SqlConnection.Close();
+            }
+            else if (CB_operationOrder.SelectedItem.ToString() == "UPDATE")
+            {
+                SqlCommand sqlCommand;
+                sqlCommand = new SqlCommand("UPDATE [Orders] " +
+                                            "SET [Product_id]=@Product_id, [Amount]=@Amount,[Cost_Order] = @Cost_Order, [Client_id]=@Client_id " +
+                                            "WHERE [Id]=@Id", SqlConnection);
+
+                sqlCommand.Parameters.AddWithValue("Product_id", GetIndexFromCombpBox(CB_productOrder.SelectedItem.ToString()));
+                sqlCommand.Parameters.AddWithValue("Amount", TB_amountProductOrder.Text);
+                sqlCommand.Parameters.AddWithValue("Cost_Order", CalculateOrder().ToString());
+                sqlCommand.Parameters.AddWithValue("Client_id", GetIndexFromCombpBox(CB_clientProductOrder.SelectedItem.ToString()));
+                sqlCommand.Parameters.AddWithValue("Id", globalID);
+                await SqlConnection.OpenAsync();
+                await sqlCommand.ExecuteNonQueryAsync();
+                SqlConnection.Close();
+                await RefreshOrderTable();
+                await DataInAllComboBox();
+            }
+            else if (CB_operationOrder.SelectedItem.ToString() == "DELETE")
+            {
+                SqlCommand sqlCommand;
+                sqlCommand = new SqlCommand("DELETE FROM [Orders] WHERE id = " + globalID, SqlConnection);
+                await SqlConnection.OpenAsync();
+                await sqlCommand.ExecuteNonQueryAsync();
+                SqlConnection.Close();
+                await RefreshOrderTable();
+                await DataInAllComboBox();
+            }
+            }
+            catch (Exception ex)
+            {
+              MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+        private double CalculateOrder()
+        {
+
+            SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            int idProduct = Convert.ToInt32(GetIndexFromCombpBox(CB_productOrder.Text));
+            double price = 0;
+            int amount = Convert.ToInt32(TB_amountProductOrder.Text);
+
+            sqlCommand = new SqlCommand("SELECT Price FROM [Product] WHERE Id =" + idProduct.ToString(), SqlConnection);
+            reader = sqlCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                price = Convert.ToDouble(reader[0].ToString());
+            }
+            reader.Close();
+            SqlConnection.Close();
+            return price * amount;
+        }
+
+        private async Task RefreshOrderTable()
+        {
+            await SqlConnection.OpenAsync();
+
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            List<Orders> ordersTable = new List<Orders>();
+
+            ordersTable.Clear();
+            sqlCommand = new SqlCommand("SELECT * FROM [Orders]", SqlConnection);
+            reader = await sqlCommand.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                ordersTable.Add(new Orders()
+                {
+                    Id = reader["Id"].ToString(),
+                    Product_id = reader["Product_id"].ToString(),
+                    Amount = reader["Amount"].ToString(),
+                    Cost_Order = reader["Cost_order"].ToString(),
+                    Client_id = reader["Client_id"].ToString()
+                });
+            }
+            OrdersTable.ItemsSource = ordersTable;
+            reader.Close();
+
+            SqlConnection.Close();
+        }
+
+        private async void CB_personOrder_DropDownClosed(object sender, EventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            try
+            {
+                globalID = GetIndexFromCombpBox(CB_chooseOrderID.SelectedItem.ToString());
+                sqlCommand = new SqlCommand("SELECT Product_id, Amount, Client_id FROM [Orders] WHERE Id = " + globalID, SqlConnection);
+                reader = await sqlCommand.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    TB_amountProductOrder.Text = reader["Amount"].ToString();
                 }
                 reader.Close();
+                SqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            SqlConnection.Close();
+        }
+        //КІНЕЦЬ#####################################################################
+
+        //ВСЕ ШО ЗВ'ЯЗАНО З CLIENT_TABLE##############################################
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (CB_operationClient.SelectedItem.ToString() == "ADD")
+                {
+                    SqlCommand sqlCommand;
+                    sqlCommand = new SqlCommand("INSERT INTO [Client] (FirstName,SecondName,LastName,Phone,E_mail)" +
+                                                    "VALUES(@FirstName,@SecondName,@LastName,@Phone,@E_mail)", SqlConnection);
+                    sqlCommand.Parameters.AddWithValue("FirstName", TB_nameClient.Text);
+                    sqlCommand.Parameters.AddWithValue("SecondName", TB_clientSecondName.Text);
+                    sqlCommand.Parameters.AddWithValue("LastName", TB_clientLastName.Text);
+                    sqlCommand.Parameters.AddWithValue("Phone", TB_phoneClient.Text);
+                    sqlCommand.Parameters.AddWithValue("E_mail", TB_EmailClient.Text);
+
+                    await SqlConnection.OpenAsync();
+                    await sqlCommand.ExecuteNonQueryAsync();
+                    SqlConnection.Close();
+
+                    await RefreshClientTable();
+                    await DataInAllComboBox();
+                }
+                else if (CB_operationClient.SelectedItem.ToString() == "SELECT")
+                {
+                    SqlDataReader reader;
+                    SqlCommand sqlCommand;
+                    List<Client> clientTable = new List<Client>();
+                    await SqlConnection.OpenAsync();
+                    sqlCommand = new SqlCommand("SELECT * FROM [Client] WHERE id = " + globalID, SqlConnection);
+                    reader = await sqlCommand.ExecuteReaderAsync();
+                    while (await reader.ReadAsync())
+                    {
+                        clientTable.Add(new Client()
+                        {
+                            Id = reader["Id"].ToString(),
+                            FirstName = reader["FirstName"].ToString(),
+                            SecondName = reader["SecondName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+                            E_mail = reader["E_mail"].ToString(),
+                            Phone = reader["Phone"].ToString()
+                        });
+                    }
+                    ClientTable.ItemsSource = clientTable;
+                    reader.Close();
+                    SqlConnection.Close();
+                }
+                else if (CB_operationClient.SelectedItem.ToString() == "UPDATE")
+                {
+                    SqlCommand sqlCommand;
+                    sqlCommand = new SqlCommand("UPDATE [Client] " +
+                                                "SET [FirstName]=@FirstName, [SecondName]=@SecondName,[LastName] = @LastName, [Phone]=@Phone, [E_mail]=@E_mail " +
+                                                "WHERE [Id]=@Id", SqlConnection);
+
+                    sqlCommand.Parameters.AddWithValue("FirstName", TB_nameClient.Text);
+                    sqlCommand.Parameters.AddWithValue("SecondName", TB_clientSecondName.Text);
+                    sqlCommand.Parameters.AddWithValue("LastName", TB_clientLastName.Text);
+                    sqlCommand.Parameters.AddWithValue("Phone", TB_phoneClient.Text);
+                    sqlCommand.Parameters.AddWithValue("E_mail", TB_EmailClient.Text);
+                    sqlCommand.Parameters.AddWithValue("Id", globalID);
+                    await SqlConnection.OpenAsync();
+                    await sqlCommand.ExecuteNonQueryAsync();
+                    SqlConnection.Close();
+                    await RefreshClientTable();
+                    await DataInAllComboBox();
+                }
+                else if (CB_operationClient.SelectedItem.ToString() == "DELETE")
+                {
+                    SqlCommand sqlCommand;
+                    sqlCommand = new SqlCommand("DELETE FROM [Client] WHERE id = " + globalID, SqlConnection);
+                    await SqlConnection.OpenAsync();
+                    await sqlCommand.ExecuteNonQueryAsync();
+
+                    SqlConnection.Close();
+
+                    await RefreshClientTable();
+                    await DataInAllComboBox();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private async Task RefreshClientTable()
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+
+            List<Client> clientTable = new List<Client>();
+
+            clientTable.Clear();
+            sqlCommand = new SqlCommand("SELECT * FROM [Client]", SqlConnection);
+            reader = await sqlCommand.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                clientTable.Add(new Client()
+                {
+                    Id = reader["Id"].ToString(),
+                    FirstName = reader["FirstName"].ToString(),
+                    SecondName = reader["SecondName"].ToString(),
+                    LastName = reader["LastName"].ToString(),
+                    E_mail = reader["E_mail"].ToString(),
+                    Phone = reader["Phone"].ToString()
+
+                });
+            }
+            ClientTable.ItemsSource = clientTable;
+            reader.Close();
+
+            SqlConnection.Close();
+        }
+
+        private async void CB_personClient_DropDownClosed(object sender, EventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            try
+            {
+                globalID = GetIndexFromCombpBox(CB_personClient.SelectedItem.ToString());
+                sqlCommand = new SqlCommand("SELECT * FROM [Client] WHERE Id = " + globalID, SqlConnection);
+                reader = await sqlCommand.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    TB_nameClient.Text = reader["FirstName"].ToString();
+                    TB_clientSecondName.Text = reader["SecondName"].ToString();
+                    TB_clientLastName.Text = reader["LastName"].ToString();
+                    TB_phoneClient.Text = reader["Phone"].ToString();
+                    TB_EmailClient.Text = reader["E_mail"].ToString();
+                }
+                reader.Close();
+                SqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            SqlConnection.Close();
+        }
+        //КІНЕЦЬ######################################################################
+        private async Task DataInAllComboBox()
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader = null;
+            SqlCommand sqlCommand;
+            try
+            {
+                sqlCommand = new SqlCommand("SELECT Id FROM [Orders]", SqlConnection);
+                reader = await sqlCommand.ExecuteReaderAsync();
+                CB_chooseOrderID.Items.Clear();
+                while (await reader.ReadAsync())
+                {
+                    CB_chooseOrderID.Items.Add(reader[0].ToString());
+                }
+                reader.Close();
+
                 sqlCommand = new SqlCommand("SELECT id,SecondName FROM [Client]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 CB_personClient.Items.Clear();
+                CB_clientProductOrder.Items.Clear();
                 while (await reader.ReadAsync())
                 {
                     CB_personClient.Items.Add(reader[0].ToString()+" "+reader[1].ToString());
+                    CB_clientProductOrder.Items.Add(reader[0].ToString()+" "+reader[1].ToString());
                 }
                 reader.Close();
+
                 sqlCommand = new SqlCommand("SELECT id,Name FROM [Departament]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 CB_chooseDepartament.Items.Clear();
@@ -124,6 +508,7 @@ namespace CourseWork
                     CB_chooseDepartament.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                 }
                 reader.Close();
+
                 sqlCommand = new SqlCommand("SELECT id,SecondName FROM [WorkerInfo]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 CB_personWorkerInfo.Items.Clear();
@@ -132,14 +517,18 @@ namespace CourseWork
                     CB_personWorkerInfo.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                 }
                 reader.Close();
+
                 sqlCommand = new SqlCommand("SELECT id,Name FROM [Product]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 CB_selectProduct.Items.Clear();
+                CB_productOrder.Items.Clear();
                 while (await reader.ReadAsync())
                 {
                     CB_selectProduct.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
+                    CB_productOrder.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                 }
                 reader.Close();
+
                 sqlCommand = new SqlCommand("SELECT id FROM [Workers]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 CB_chooseWorker.Items.Clear();
@@ -148,6 +537,7 @@ namespace CourseWork
                     CB_chooseWorker.Items.Add(reader[0].ToString());
                 }
                 reader.Close();
+
                 sqlCommand = new SqlCommand("SELECT id FROM [Directors]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 CB_chooseDirector.Items.Clear();
@@ -156,6 +546,7 @@ namespace CourseWork
                     CB_chooseDirector.Items.Add(reader[0].ToString());
                 }
                 reader.Close();
+
                 sqlCommand = new SqlCommand("SELECT id,SecondName FROM [DirectorInfo]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 CB_personDirectorInfo.Items.Clear();
@@ -164,6 +555,7 @@ namespace CourseWork
                     CB_personDirectorInfo.Items.Add(reader[0].ToString()+" "+reader[1].ToString());
                 }
                 reader.Close();
+
                 sqlCommand = new SqlCommand("SELECT id,Name FROM [Storage]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 CB_Storage.Items.Clear();
@@ -172,6 +564,7 @@ namespace CourseWork
                     CB_Storage.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                 }
                 reader.Close();
+
                 sqlCommand = new SqlCommand("SELECT id,Name FROM [Component]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 CB_itemComponent.Items.Clear();
@@ -180,6 +573,7 @@ namespace CourseWork
                     CB_itemComponent.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                 }
                 reader.Close();
+
                 sqlCommand = new SqlCommand("SELECT id,Name FROM [Colors]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 CB_chooseColors.Items.Clear();
@@ -187,6 +581,8 @@ namespace CourseWork
                 {
                     CB_chooseColors.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                 }
+                reader.Close();
+                SqlConnection.Close();
             }
             catch (Exception ex)
             {
@@ -201,21 +597,33 @@ namespace CourseWork
             }
         }
 
-        private async void CB_chooseColors_DropDownClosed(object sender, EventArgs e)
-        {
-            
-        }
         private string GetNameSelectItem(string selectItem)
         {
             return " ";
         }
         private string GetIndexFromCombpBox(string item)
         {
-            return " ";
+            string id = null;
+            for (int i = 0; i < item.Length; i++)
+            {
+                if (item[i] != ' ')
+                {
+                    id += item[i];
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return id;
         }
+
 
         private async Task FillAllTable()
         {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
             List<Colors> colorsTable = new List<Colors>();
             List<Orders> ordersTable = new List<Orders>();
             List<Client> clientTable = new List<Client>();
@@ -230,6 +638,7 @@ namespace CourseWork
             try
             {
                 //
+                colorsTable.Clear();
                 sqlCommand = new SqlCommand("SELECT * FROM [Colors]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
@@ -244,6 +653,7 @@ namespace CourseWork
                 ColorsTable.ItemsSource = colorsTable;
                 reader.Close();
                 //
+                ordersTable.Clear();
                 sqlCommand = new SqlCommand("SELECT * FROM [Orders]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
@@ -257,9 +667,10 @@ namespace CourseWork
                         Client_id = reader["Client_id"].ToString()
                     });
                 }
-                OrdersTable.Items.Add(ordersTable);
+                OrdersTable.ItemsSource = ordersTable;
                 reader.Close();
                 //
+                clientTable.Clear();
                 sqlCommand = new SqlCommand("SELECT * FROM [Client]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
@@ -275,9 +686,10 @@ namespace CourseWork
 
                     });
                 }
-                ClientTable.Items.Add(clientTable);
+                ClientTable.ItemsSource = clientTable;
                 reader.Close();
                 //
+                componentTable.Clear();
                 sqlCommand = new SqlCommand("SELECT * FROM [Component]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
@@ -295,6 +707,7 @@ namespace CourseWork
                 ComponentTable.Items.Add(componentTable);
                 reader.Close();
                 //
+                departamentTable.Clear();
                 sqlCommand = new SqlCommand("SELECT * FROM [Departament]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
@@ -309,6 +722,7 @@ namespace CourseWork
                 DepartamentTable.Items.Add(departamentTable);
                 reader.Close();
                 //
+                directorInfoTable.Clear();
                 sqlCommand = new SqlCommand("SELECT * FROM [DirectorInfo]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
@@ -327,6 +741,7 @@ namespace CourseWork
                 DirectorInfoTable.Items.Add(directorInfoTable);
                 reader.Close();
                 //
+                directorInfoTable.Clear();
                 sqlCommand = new SqlCommand("SELECT * FROM [Directors]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
@@ -341,6 +756,7 @@ namespace CourseWork
                 DirectorTable.Items.Add(directorsTable);
                 reader.Close();
                 //
+                productTable.Clear();
                 sqlCommand = new SqlCommand("SELECT * FROM [Product]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
@@ -358,6 +774,7 @@ namespace CourseWork
                 ProductTable.Items.Add(productTable);
                 reader.Close();
                 //
+                storageTable.Clear();
                 sqlCommand = new SqlCommand("SELECT * FROM [Storage]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
@@ -372,6 +789,7 @@ namespace CourseWork
                 StorageTable.Items.Add(storageTable);
                 reader.Close();
                 //
+                workerInfoTable.Clear();
                 sqlCommand = new SqlCommand("SELECT * FROM [WorkerInfo]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
@@ -390,6 +808,7 @@ namespace CourseWork
                 WorkerInfoTable.Items.Add(workerInfoTable);
                 reader.Close();
                 //
+                workersTable.Clear();
                 sqlCommand = new SqlCommand("SELECT * FROM [Workers]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
@@ -404,6 +823,7 @@ namespace CourseWork
                 }
                 WorkersTable.Items.Add(workersTable);
                 reader.Close();
+                SqlConnection.Close();
             }
             catch (Exception ex)
             {
@@ -411,6 +831,7 @@ namespace CourseWork
             }
             finally
             {
+                reader = null;
                 if (reader != null)
                 {
                     reader.Close();
@@ -425,5 +846,6 @@ namespace CourseWork
                 SqlConnection.Close();
             }
         }
+
     }
 }
