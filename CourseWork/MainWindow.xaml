@@ -230,7 +230,7 @@
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="227.6,214,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_operationProduct" x:Name="CB_operationProduct">
                                 </ComboBox>
                                 <Label Content="Select forniture" Grid.Column="1" HorizontalAlignment="Left" Margin="366.6,211,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.13,-0.187"/>
-                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="457.6,214,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_selectProduct" x:Name="CB_selectProduct"/>
+                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="457.6,214,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_selectProduct" x:Name="CB_selectProduct" DropDownClosed="CB_selectProduct_DropDownClosed"/>
                                 <Label Content="Name" Grid.Column="1" HorizontalAlignment="Left" Margin="133.6,260,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.026,-0.219"/>
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="198.6,263,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_nemeProduct" x:Name="TB_nemeProduct"/>
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="80" Margin="198.6,300,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" AutomationProperties.Name="TB_descriptionProduct" x:Name="TB_descriptionProduct"/>
@@ -241,7 +241,7 @@
                                 <Label Content="Departament" Grid.Column="1" HorizontalAlignment="Left" Margin="485.6,260,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.13,-0.187"/>
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="577.6,303,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_priceProduct" x:Name="TB_priceProduct"/>
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="577.6,266,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="3.33,0.857" AutomationProperties.Name="CB_departamentProduct" x:Name="CB_departamentProduct"/>
-                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="485.6,340,0,0" VerticalAlignment="Top" Width="212" Height="29" AutomationProperties.Name="BTN_doneProduct"/>
+                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="485.6,340,0,0" VerticalAlignment="Top" Width="212" Height="29" AutomationProperties.Name="BTN_doneProduct" Click="ProductDone_BTN"/>
                             </Grid>
                         </TabItem>
                         <TabItem Header="Workers">
@@ -264,13 +264,13 @@
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="359.6,241,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_operationWorker" x:Name="CB_operationWorker">
                                 </ComboBox>
                                 <Label Content="Worker ID" Grid.Column="1" HorizontalAlignment="Left" Margin="488.6,241,0,0" VerticalAlignment="Top"/>
-                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="557.6,241,0,0" VerticalAlignment="Top" Width="99" AutomationProperties.Name="CB_chooseWorker" x:Name="CB_chooseWorker"/>
+                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="557.6,241,0,0" VerticalAlignment="Top" Width="99" AutomationProperties.Name="CB_chooseWorker" x:Name="CB_chooseWorker" DropDownClosed="CB_chooseWorker_DropDownClosed"/>
                                 <Label Content="Worker info" Grid.Column="1" HorizontalAlignment="Left" Margin="255.6,279,0,0" VerticalAlignment="Top"/>
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="340.6,279,0,0" VerticalAlignment="Top" Width="122" AutomationProperties.Name="CB_workerInfoWorker" x:Name="CB_workerInfoWorker"/>
                                 <Label Content="Departament" Grid.Column="1" HorizontalAlignment="Left" Margin="255.6,319,0,0" VerticalAlignment="Top"/>
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="340.6,319,0,0" VerticalAlignment="Top" Width="122" AutomationProperties.Name="CB_departamentWorker" x:Name="CB_departamentWorker"/>
                                 <Label Content="Position" Grid.Column="1" HorizontalAlignment="Left" Margin="468.6,279,0,0" VerticalAlignment="Top" Width="68" AutomationProperties.Name="CB_workerInfo" x:Name="CB_workerInfo"/>
-                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="541.6,319,0,0" VerticalAlignment="Top" Width="105" Height="38" AutomationProperties.Name="BTN_doneWorker"/>
+                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="541.6,319,0,0" VerticalAlignment="Top" Width="105" Height="38" AutomationProperties.Name="BTN_doneWorker" Click="WorkersClick_BTN"/>
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="526.6,282,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_positionWorker" x:Name="TB_positionWorker"/>
                             </Grid>
                         </TabItem>
