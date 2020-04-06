@@ -162,13 +162,12 @@
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="279.6,213,0,0" VerticalAlignment="Top" Width="120" x:Name="CB_operationDepartament">
                                 </ComboBox>
                                 <Label Content="Choose departament" HorizontalAlignment="Left" Margin="401.6,210,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="523.6,213,0,0" VerticalAlignment="Top" Width="86" AutomationProperties.Name="CB_chooseDepartament" x:Name="CB_chooseDepartament"/>
+                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="523.6,213,0,0" VerticalAlignment="Top" Width="86" AutomationProperties.Name="CB_chooseDepartament" x:Name="CB_chooseDepartament" DropDownClosed="CB_chooseDepartament_DropDownClosed"/>
                                 <Label Content="Name departement" Grid.Column="1" HorizontalAlignment="Left" Margin="204.6,264,0,0" VerticalAlignment="Top"/>
                                 <Label Content="Choose storage" Grid.Column="1" HorizontalAlignment="Left" Margin="204.6,310,0,0" VerticalAlignment="Top"/>
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="323.6,267,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_nameDepartament" x:Name="TB_nameDepartament"/>
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="323.6,313,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_chooseStorageDepartament" x:Name="CB_chooseStorageDepartament"/>
-                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="481.6,267,0,0" VerticalAlignment="Top" Width="75" Height="42" AutomationProperties.Name="BTN_doneDepartament"/>
-                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="323.6,313,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_chooseStorageDepartament"/>
+                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="481.6,267,0,0" VerticalAlignment="Top" Width="75" Height="42" AutomationProperties.Name="BTN_doneDepartament" Click="Button_Click_1"/>
                             </Grid>
                         </TabItem>
                         <TabItem Header="Worker info" >
@@ -194,7 +193,7 @@
                                 <ComboBox Grid.Column="2" HorizontalAlignment="Left" Margin="81.6,217,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_operationWorkerInfo" x:Name="CB_operationWorkerInfo">
                                 </ComboBox>
                                 <Label Content="Choose person" HorizontalAlignment="Left" Margin="203.6,214,0,0" VerticalAlignment="Top" Grid.Column="2"/>
-                                <ComboBox Grid.Column="2" HorizontalAlignment="Left" Margin="291.6,217,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_personWorkerInfo" x:Name="CB_personWorkerInfo"/>
+                                <ComboBox Grid.Column="2" HorizontalAlignment="Left" Margin="291.6,217,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_personWorkerInfo" x:Name="CB_personWorkerInfo" DropDownClosed="CB_personWorkerInfo_DropDownClosed"/>
                                 <Label Content="Name" HorizontalAlignment="Left" Margin="10,254,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
                                 <Label Grid.ColumnSpan="3" Content="Second name" HorizontalAlignment="Left" Margin="10,295,0,0" VerticalAlignment="Top" Width="93"/>
                                 <Label Content="Last name" HorizontalAlignment="Left" Margin="10,334,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
@@ -207,7 +206,7 @@
                                 <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="399.6,336,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_phoneWorkserInfo" x:Name="TB_phoneWorkserInfo"/>
                                 <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="399.6,295,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_emaolWorkerInfo" x:Name="TB_emaolWorkerInfo"/>
                                 <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="399.6,258,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_dateBornWorkerInfo" x:Name="TB_dateBornWorkerInfo"/>
-                                <Button Content="DONE" Grid.Column="2" HorizontalAlignment="Left" Margin="587.6,246,0,0" VerticalAlignment="Top" Width="123" Height="111" AutomationProperties.Name="BTN_doneWorkerInfo"/>
+                                <Button Content="DONE" Grid.Column="2" HorizontalAlignment="Left" Margin="587.6,246,0,0" VerticalAlignment="Top" Width="123" Height="111" AutomationProperties.Name="BTN_doneWorkerInfo" Click="Button_Click_2"/>
                             </Grid>
                         </TabItem>
                         <TabItem Header="Product">
@@ -307,15 +306,15 @@
                                     <ColumnDefinition Width="26*"/>
                                     <ColumnDefinition Width="943*"/>
                                 </Grid.ColumnDefinitions>
-                                <DataGrid HorizontalAlignment="Left" Height="210" VerticalAlignment="Top" Width="803" Background="White" ColumnWidth="100" Grid.ColumnSpan="2" x:Name="DirectorInfoTable">
+                                <DataGrid HorizontalAlignment="Left" Height="210" VerticalAlignment="Top" Width="703" Background="White" ColumnWidth="100" Grid.ColumnSpan="2" x:Name="DirectorInfoTable">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Binding="{Binding Id}"  Header="ID"/>
                                         <DataGridTextColumn Binding="{Binding FirstName}"  Header="Name"/>
                                         <DataGridTextColumn Binding="{Binding SecondName}"  Header="Second name"/>
                                         <DataGridTextColumn Binding="{Binding LastName}"  Header="Last name"/>
-                                        <DataGridTextColumn Binding="{Binding DateBorn}"  Header="Date born"/>
                                         <DataGridTextColumn Binding="{Binding Phone}"  Header="Phone"/>
                                         <DataGridTextColumn Binding="{Binding E_mail}"  Header="E-mail"/>
+                                        <DataGridTextColumn Binding="{Binding DateBorn}"  Header="Date born"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="167" Margin="0,217,0,0" Stroke="Black" VerticalAlignment="Top" Width="803" Grid.ColumnSpan="2"/>

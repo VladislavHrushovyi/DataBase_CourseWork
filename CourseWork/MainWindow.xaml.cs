@@ -473,6 +473,283 @@ namespace CourseWork
             SqlConnection.Close();
         }
         //КІНЕЦЬ######################################################################
+
+        //ВСЕ ШО ПОВЄЯЗАНО З DEPARTAMENT_TABLE########################################
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (CB_operationDepartament.SelectedItem.ToString() == "ADD")
+                {
+                    SqlCommand sqlCommand;
+                    sqlCommand = new SqlCommand("INSERT INTO [Departament] (Name, Storage_id)" +
+                                                    "VALUES(@Name, @Storage_id)", SqlConnection);
+                    sqlCommand.Parameters.AddWithValue("Name", TB_nameDepartament.Text);
+                    sqlCommand.Parameters.AddWithValue("Storage_id", GetIndexFromCombpBox(CB_chooseStorageDepartament.SelectedItem.ToString()));
+
+                    await SqlConnection.OpenAsync();
+                    await sqlCommand.ExecuteNonQueryAsync();
+                    SqlConnection.Close();
+
+                    await RefreshDepartamentTable();
+                    await DataInAllComboBox();
+                }
+                else if (CB_operationDepartament.SelectedItem.ToString() == "SELECT")
+                {
+                    SqlDataReader reader;
+                    SqlCommand sqlCommand;
+                    List<Departament> departamentTable = new List<Departament>();
+                    await SqlConnection.OpenAsync();
+                    sqlCommand = new SqlCommand("SELECT * FROM [Departament] WHERE id = " + globalID, SqlConnection);
+                    reader = await sqlCommand.ExecuteReaderAsync();
+                    while (await reader.ReadAsync())
+                    {
+                        departamentTable.Add(new Departament()
+                        {
+                            Id = reader["Id"].ToString(),
+                            Name = reader["Name"].ToString(),
+                            Storage_id = reader["Storage_id"].ToString()
+                        });
+                    }
+                    DepartamentTable.ItemsSource = departamentTable;
+                    reader.Close();
+                    SqlConnection.Close();
+                }
+                else if (CB_operationDepartament.SelectedItem.ToString() == "UPDATE")
+                {
+                    SqlCommand sqlCommand;
+                    sqlCommand = new SqlCommand("UPDATE [Departament] " +
+                                                "SET [Name]=@Name, [Storage_id]=@Storage_id " +
+                                                "WHERE [Id]=@Id", SqlConnection);
+
+                    sqlCommand.Parameters.AddWithValue("Name", TB_nameDepartament.Text);
+                    sqlCommand.Parameters.AddWithValue("Storage_id", GetIndexFromCombpBox(CB_chooseStorageDepartament.SelectedItem.ToString()));
+                    sqlCommand.Parameters.AddWithValue("Id", globalID);
+                    await SqlConnection.OpenAsync();
+                    await sqlCommand.ExecuteNonQueryAsync();
+                    SqlConnection.Close();
+                    await RefreshDepartamentTable();
+                    await DataInAllComboBox();
+                }
+                else if (CB_operationDepartament.SelectedItem.ToString() == "DELETE")
+                {
+                    SqlCommand sqlCommand;
+                    sqlCommand = new SqlCommand("DELETE FROM [Departament] WHERE id = " + globalID, SqlConnection);
+                    await SqlConnection.OpenAsync();
+                    await sqlCommand.ExecuteNonQueryAsync();
+
+                    SqlConnection.Close();
+
+                    await RefreshDepartamentTable();
+                    await DataInAllComboBox();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private async Task RefreshDepartamentTable() 
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+
+            List<Departament> departamentTable = new List<Departament>();
+
+            departamentTable.Clear();
+            sqlCommand = new SqlCommand("SELECT * FROM [Departament]", SqlConnection);
+            reader = await sqlCommand.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                departamentTable.Add(new Departament()
+                {
+                    Id = reader["Id"].ToString(),
+                    Name = reader["Name"].ToString(),
+                    Storage_id = reader["Storage_id"].ToString()
+                });
+            }
+            DepartamentTable.ItemsSource = departamentTable;
+            reader.Close();
+
+            SqlConnection.Close();
+        }
+
+
+        private async void CB_chooseDepartament_DropDownClosed(object sender, EventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            try
+            {
+                globalID = GetIndexFromCombpBox(CB_chooseDepartament.SelectedItem.ToString());
+                sqlCommand = new SqlCommand("SELECT * FROM [Departament] WHERE Id = " + globalID, SqlConnection);
+                reader = await sqlCommand.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    TB_nameDepartament.Text = reader["Name"].ToString();
+                }
+                reader.Close();
+                SqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            SqlConnection.Close();
+        }
+
+        //КІНЕЦЬ######################################################################
+
+        //ВСЕ ШО ПОВ'ЯЗАНО З WORKERINFO_TABLE#########################################
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            //try
+           //{
+                if (CB_operationWorkerInfo.SelectedItem.ToString() == "ADD")
+                {
+                    SqlCommand sqlCommand;
+                    sqlCommand = new SqlCommand("INSERT INTO [WorkerInfo] (FirstName, SecondName, LastName, DateBorn, Phone, E_mail)" +
+                                                    "VALUES(@FirstName, @SecondName, @LastName, @DateBorn, @Phone, @E_mail)", SqlConnection);
+                    sqlCommand.Parameters.AddWithValue("FirstName", TB_nameWorkserInfo.Text);
+                    sqlCommand.Parameters.AddWithValue("SecondName", TB_secondNameWorkerInfo.Text);
+                    sqlCommand.Parameters.AddWithValue("LastName", TB_lastNameWorkerInfo.Text);
+                    sqlCommand.Parameters.AddWithValue("DateBorn", TB_dateBornWorkerInfo.Text);
+                    sqlCommand.Parameters.AddWithValue("Phone", TB_phoneWorkserInfo.Text);
+                    sqlCommand.Parameters.AddWithValue("E_mail", TB_emaolWorkerInfo.Text);
+
+                    await SqlConnection.OpenAsync();
+                    await sqlCommand.ExecuteNonQueryAsync();
+                    SqlConnection.Close();
+
+                    await RefreshWorkerInfoTable();
+                    await DataInAllComboBox();
+                }
+                else if (CB_operationWorkerInfo.SelectedItem.ToString() == "SELECT")
+                {
+                    SqlDataReader reader;
+                    SqlCommand sqlCommand;
+                    List<WorkerInfo> workerInfoTable = new List<WorkerInfo>();
+                    await SqlConnection.OpenAsync();
+                    sqlCommand = new SqlCommand("SELECT * FROM [WorkerInfo] WHERE id = " + globalID, SqlConnection);
+                    reader = await sqlCommand.ExecuteReaderAsync();
+                    while (await reader.ReadAsync())
+                    {
+                        workerInfoTable.Add(new WorkerInfo()
+                        {
+                            Id = reader["Id"].ToString(),
+                            FirstName = reader["FirstName"].ToString(),
+                            SecondName = reader["SecondName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+                            Phone = reader["Phone"].ToString(),
+                            E_mail = reader["E_mail"].ToString(),
+                            DateBorn = reader["DateBorn"].ToString()
+                        });
+                    }
+                    WorkerInfoTable.ItemsSource = workerInfoTable;
+                    reader.Close();
+                    SqlConnection.Close();
+                }
+                else if (CB_operationWorkerInfo.SelectedItem.ToString() == "UPDATE")
+                {
+                    SqlCommand sqlCommand;
+                    sqlCommand = new SqlCommand("UPDATE [WorkerInfo] " +
+                                                "SET [FirstName]=@FirstName, [SecondName]=@SecondName,[LastName] = @LastName, [Phone]=@Phone, [E_mail]=@E_mail, [DateBorn]=@DateBorn " +
+                                                "WHERE [Id]=@Id", SqlConnection);
+
+                    sqlCommand.Parameters.AddWithValue("FirstName", TB_nameWorkserInfo.Text);
+                    sqlCommand.Parameters.AddWithValue("SecondName", TB_secondNameWorkerInfo.Text);
+                    sqlCommand.Parameters.AddWithValue("LastName", TB_lastNameWorkerInfo.Text);
+                    sqlCommand.Parameters.AddWithValue("DateBorn", TB_dateBornWorkerInfo.Text);
+                    sqlCommand.Parameters.AddWithValue("Phone", TB_phoneWorkserInfo.Text);
+                    sqlCommand.Parameters.AddWithValue("E_mail", TB_emaolWorkerInfo.Text);
+
+                sqlCommand.Parameters.AddWithValue("Id", globalID);
+                await SqlConnection.OpenAsync();
+                    await sqlCommand.ExecuteNonQueryAsync();
+                    SqlConnection.Close();
+                    await RefreshWorkerInfoTable();
+                    await DataInAllComboBox();
+                }
+                else if (CB_operationWorkerInfo.SelectedItem.ToString() == "DELETE")
+                {
+                    SqlCommand sqlCommand;
+                    sqlCommand = new SqlCommand("DELETE FROM [WorkerInfo] WHERE id = " + globalID, SqlConnection);
+                    await SqlConnection.OpenAsync();
+                    await sqlCommand.ExecuteNonQueryAsync();
+
+                    SqlConnection.Close();
+
+                    await RefreshWorkerInfoTable();
+                    await DataInAllComboBox();
+                }
+          // }
+           //catch (Exception ex)
+           // {
+             //   MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Warning);
+           // }
+       }
+    
+        private async Task RefreshWorkerInfoTable()
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+
+            List<WorkerInfo> workerInfoTable = new List<WorkerInfo>();
+
+            workerInfoTable.Clear();
+            sqlCommand = new SqlCommand("SELECT * FROM [WorkerInfo]", SqlConnection);
+            reader = await sqlCommand.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                workerInfoTable.Add(new WorkerInfo()
+                {
+                    Id = reader["Id"].ToString(),
+                    FirstName = reader["FirstName"].ToString(),
+                    SecondName = reader["SecondName"].ToString(),
+                    LastName = reader["LastName"].ToString(),
+                    Phone = reader["Phone"].ToString(),
+                    E_mail = reader["E_mail"].ToString(),
+                    DateBorn = reader["DateBorn"].ToString()
+                });
+            }
+            WorkerInfoTable.ItemsSource = workerInfoTable;
+            reader.Close();
+
+            SqlConnection.Close();
+        }
+        private async void CB_personWorkerInfo_DropDownClosed(object sender, EventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            //try
+           // {
+                globalID = GetIndexFromCombpBox(CB_personWorkerInfo.SelectedItem.ToString());
+                sqlCommand = new SqlCommand("SELECT * FROM [WorkerInfo] WHERE Id = " + globalID, SqlConnection);
+                reader = await sqlCommand.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    TB_nameWorkserInfo.Text = reader["FirstName"].ToString();
+                    TB_secondNameWorkerInfo.Text = reader["SecondName"].ToString();
+                    TB_lastNameWorkerInfo.Text = reader["LastName"].ToString();
+                    TB_phoneWorkserInfo.Text = reader["Phone"].ToString();
+                    TB_dateBornWorkerInfo.Text = reader["DateBorn"].ToString();
+                    TB_emaolWorkerInfo.Text = reader["E_mail"].ToString();
+                }
+                reader.Close();
+                SqlConnection.Close();
+           // }
+           // catch (Exception ex)
+            //{
+               // MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
+            SqlConnection.Close();
+        }
+        //КІНЕЦЬ######################################################################
         private async Task DataInAllComboBox()
         {
             await SqlConnection.OpenAsync();
@@ -559,9 +836,12 @@ namespace CourseWork
                 sqlCommand = new SqlCommand("SELECT id,Name FROM [Storage]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 CB_Storage.Items.Clear();
+                CB_chooseStorageDepartament.Items.Clear();
                 while (await reader.ReadAsync())
                 {
                     CB_Storage.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
+
+                    CB_chooseStorageDepartament.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                 }
                 reader.Close();
 
@@ -704,7 +984,7 @@ namespace CourseWork
                         Storage_id = reader["Storage_id"].ToString()
                     });
                 }
-                ComponentTable.Items.Add(componentTable);
+                ComponentTable.ItemsSource = componentTable;
                 reader.Close();
                 //
                 departamentTable.Clear();
@@ -719,7 +999,7 @@ namespace CourseWork
                         Storage_id = reader["Storage_id"].ToString()
                     });
                 }
-                DepartamentTable.Items.Add(departamentTable);
+                DepartamentTable.ItemsSource = departamentTable;
                 reader.Close();
                 //
                 directorInfoTable.Clear();
@@ -738,10 +1018,10 @@ namespace CourseWork
                         DateBorn = reader["DateBorn"].ToString()
                     });
                 }
-                DirectorInfoTable.Items.Add(directorInfoTable);
+                DirectorInfoTable.ItemsSource = directorInfoTable;
                 reader.Close();
                 //
-                directorInfoTable.Clear();
+                directorsTable.Clear();
                 sqlCommand = new SqlCommand("SELECT * FROM [Directors]", SqlConnection);
                 reader = await sqlCommand.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
@@ -753,7 +1033,7 @@ namespace CourseWork
                         Departament_id = reader["Departament_id"].ToString()
                     }); ;
                 }
-                DirectorTable.Items.Add(directorsTable);
+                DirectorTable.ItemsSource = directorsTable;
                 reader.Close();
                 //
                 productTable.Clear();
@@ -771,7 +1051,7 @@ namespace CourseWork
                         Price = reader["Price"].ToString()
                     });
                 }
-                ProductTable.Items.Add(productTable);
+                ProductTable.ItemsSource = productTable;
                 reader.Close();
                 //
                 storageTable.Clear();
@@ -786,7 +1066,7 @@ namespace CourseWork
 
                     });
                 }
-                StorageTable.Items.Add(storageTable);
+                StorageTable.ItemsSource = storageTable;
                 reader.Close();
                 //
                 workerInfoTable.Clear();
@@ -805,7 +1085,7 @@ namespace CourseWork
                         DateBorn = reader["DateBorn"].ToString()
                     });
                 }
-                WorkerInfoTable.Items.Add(workerInfoTable);
+                WorkerInfoTable.ItemsSource = workerInfoTable;
                 reader.Close();
                 //
                 workersTable.Clear();
@@ -821,7 +1101,7 @@ namespace CourseWork
                         Position = reader["Position"].ToString()
                     });
                 }
-                WorkersTable.Items.Add(workersTable);
+                WorkersTable.ItemsSource = workersTable;
                 reader.Close();
                 SqlConnection.Close();
             }
