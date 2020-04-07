@@ -36,3 +36,4 @@ D:\Study\SecondSemestr\DataBase\CourseWork\CourseWork\obj\Debug\CourseWork.cspro
 D:\Study\SecondSemestr\DataBase\CourseWork\CourseWork\bin\Debug\FornitureManufactureDB.mdf
 D:\Study\SecondSemestr\DataBase\CourseWork\CourseWork\bin\Debug\FornitureManufactureDB_log.ldf
 D:\Study\SecondSemestr\DataBase\CourseWork\CourseWork\obj\Debug\CourseWork_Content.g.cs
+D:\Study\SecondSemestr\DataBase\CourseWork\CourseWork\obj\Debug\CourseWork.csproj.CoreCompileInputs.cache

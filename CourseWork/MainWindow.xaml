@@ -292,10 +292,10 @@
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="279.6,213,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_operationDirector" x:Name="CB_operationDirector">
                                 </ComboBox>
                                 <Label Content="Choose person ID" HorizontalAlignment="Left" Margin="401.6,210,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="510.6,213,0,0" VerticalAlignment="Top" Width="99" AutomationProperties.Name="CB_chooseDirector" x:Name="CB_chooseDirector"/>
+                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="510.6,213,0,0" VerticalAlignment="Top" Width="99" AutomationProperties.Name="CB_chooseDirector" x:Name="CB_chooseDirector" DropDownClosed="CB_chooseDirector_DropDownClosed"/>
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="287.6,271,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_secondNameDirector" x:Name="CB_secondNameDirector"/>
                                 <Label Content="Director info" Grid.Column="1" HorizontalAlignment="Left" Margin="200.6,268,0,0" VerticalAlignment="Top"/>
-                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="445.6,268,0,0" VerticalAlignment="Top" Width="75" Height="26" AutomationProperties.Name="BTN_doneDirector"/>
+                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="445.6,268,0,0" VerticalAlignment="Top" Width="75" Height="26" AutomationProperties.Name="BTN_doneDirector" Click="DirectorsDone_BTN"/>
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="287.6,320,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_departamentDirector" x:Name="CB_departamentDirector"/>
                                 <Label Content="Departament" Grid.Column="1" HorizontalAlignment="Left" Margin="200.6,317,0,0" VerticalAlignment="Top"/>
                             </Grid>
@@ -322,7 +322,7 @@
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="81.6,217,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_operationDirectorInfo" x:Name="CB_operationDirectorInfo">
                                 </ComboBox>
                                 <Label Content="Choose person" HorizontalAlignment="Left" Margin="203.6,214,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="291.6,217,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_personDirectorInfo" x:Name="CB_personDirectorInfo"/>
+                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="291.6,217,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_personDirectorInfo" x:Name="CB_personDirectorInfo" DropDownClosed="CB_personDirectorInfo_DropDownClosed"/>
                                 <Label Content="Name" HorizontalAlignment="Left" Margin="10,254,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                                 <Label Grid.ColumnSpan="2" Content="Second name" HorizontalAlignment="Left" Margin="10,295,0,0" VerticalAlignment="Top" Width="93"/>
                                 <Label Content="Last name" HorizontalAlignment="Left" Margin="10,334,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
@@ -335,7 +335,7 @@
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="399.6,258,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_phoneDorectorInfo" x:Name="TB_phoneDorectorInfo"/>
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="399.6,298,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_EmailDirectorInfo" x:Name="TB_EmailDirectorInfo"/>
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="399.6,334,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_dateBornDirectorInfo" x:Name="TB_dateBornDirectorInfo"/>
-                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="593.6,246,0,0" VerticalAlignment="Top" Width="127" Height="114" AutomationProperties.Name="BTN_doneDirectorInfo"/>
+                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="593.6,246,0,0" VerticalAlignment="Top" Width="127" Height="114" AutomationProperties.Name="BTN_doneDirectorInfo" Click="DirectorInfoDone_BNT"/>
                             </Grid>
                         </TabItem>
                         <TabItem Header="Storage">
@@ -355,11 +355,10 @@
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="279.6,200,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_operationStorage" x:Name="CB_operationStorage">
                                 </ComboBox>
                                 <Label Content="Name storage" HorizontalAlignment="Left" Margin="404.6,197,0,0" VerticalAlignment="Top" Grid.Column="1" AutomationProperties.Name="Name storage"/>
-                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="489.6,200,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_Storage" x:Name="CB_Storage"/>
-                                <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="489.6,200,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_Storage" x:Name="CB_Storage" DropDownClosed="CB_Storage_DropDownClosed"/>
                                 <Label Content="Name storage" Grid.Column="1" HorizontalAlignment="Left" Margin="213.6,276,0,0" VerticalAlignment="Top"/>
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="324.6,279,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_nameStorage" x:Name="TB_nameStorage"/>
-                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="489.6,276,0,0" VerticalAlignment="Top" Width="75" Height="41" AutomationProperties.Name="BTN_doneStorage"/>
+                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="489.6,276,0,0" VerticalAlignment="Top" Width="75" Height="41" AutomationProperties.Name="BTN_doneStorage" Click="StorageDone_BTN"/>
                             </Grid>
                         </TabItem>
                         <TabItem Header="Component">
@@ -383,14 +382,14 @@
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="279.6,200,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_operationComponent" x:Name="CB_operationComponent">
                                 </ComboBox>
                                 <Label Content="Choose item" HorizontalAlignment="Left" Margin="412.6,197,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="489.6,200,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_itemComponent" x:Name="CB_itemComponent"/>
+                                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="489.6,200,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_itemComponent" x:Name="CB_itemComponent" DropDownClosed="CB_itemComponent_DropDownClosed"/>
                                 <Label Content="Name" Grid.Column="1" HorizontalAlignment="Left" Margin="207.6,229,0,0" VerticalAlignment="Top"/>
                                 <Label Content="Type" Grid.Column="1" HorizontalAlignment="Left" Margin="207.6,331,0,0" VerticalAlignment="Top"/>
                                 <Label Content="Color" Grid.Column="1" HorizontalAlignment="Left" Margin="207.6,294,0,0" VerticalAlignment="Top"/>
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="254.6,232,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_nameComponent" x:Name="TB_nameComponent"/>
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="253.6,334,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_typeComponent" x:Name="TB_typeComponent"/>
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="253.6,297,0,0" VerticalAlignment="Top" Width="120" AutomationProperties.Name="CB_colorComponent" x:Name="CB_colorComponent"/>
-                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="431.6,297,0,0" VerticalAlignment="Top" Width="75" Height="42" AutomationProperties.Name="BTN_doneComponent" />
+                                <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="431.6,297,0,0" VerticalAlignment="Top" Width="75" Height="42" AutomationProperties.Name="BTN_doneComponent" Click="ComponentDone_BTN" />
                                 <Label Content="Amount" Grid.Column="1" HorizontalAlignment="Left" Margin="207.6,263,0,0" VerticalAlignment="Top"/>
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="254.6,266,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_amountComponent" x:Name="TB_amountComponent"/>
                                 <Label Content="Storage" Grid.Column="1" HorizontalAlignment="Left" Margin="397.6,248,0,0" VerticalAlignment="Top"/>
