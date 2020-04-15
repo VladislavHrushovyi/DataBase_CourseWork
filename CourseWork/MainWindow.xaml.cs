@@ -8,7 +8,7 @@ namespace CourseWork
 {
     public partial class MainWindow : Window
     {
-        List<string> operation = new List<string>() { "ADD", "SELECT", "UPDATE", "DELETE" };
+        readonly List<string> operation = new List<string>() { "ADD", "SELECT", "UPDATE", "DELETE" };
 
         SqlConnection SqlConnection;
         string globalID = null;
@@ -17,7 +17,7 @@ namespace CourseWork
             InitializeComponent();
         }
 
-        private void choseSingle_Click(object sender, RoutedEventArgs e)
+        private void ChooseSingle_Click(object sender, RoutedEventArgs e)
         {
 
         }
@@ -276,6 +276,35 @@ namespace CourseWork
             return price * amount;
         }
 
+        private async void DoneSelectCostrOrder_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            List<Orders> ordersTable = new List<Orders>();
+
+            ordersTable.Clear();
+            sqlCommand = new SqlCommand("SELECT * FROM [Orders] WHERE Cost_Order >= @fromCost AND Cost_Order <= @toCost", SqlConnection);
+            sqlCommand.Parameters.AddWithValue("fromCost", TB_costFromOrders.Text);
+            sqlCommand.Parameters.AddWithValue("toCost", TB_costToOrder.Text);
+            reader = await sqlCommand.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                ordersTable.Add(new Orders()
+                {
+                    Id = reader["Id"].ToString(),
+                    Product_id = reader["Product_id"].ToString(),
+                    Amount = reader["Amount"].ToString(),
+                    Cost_Order = reader["Cost_order"].ToString(),
+                    Client_id = reader["Client_id"].ToString()
+                });
+            }
+            OrdersTable.ItemsSource = ordersTable;
+            reader.Close();
+
+            SqlConnection.Close();
+        }
         private async Task RefreshOrderTable()
         {
             await SqlConnection.OpenAsync();
@@ -892,6 +921,98 @@ namespace CourseWork
             {
                 MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            SqlConnection.Close();
+        }
+
+        private async void SelectProductOR_BTN(object sender, RoutedEventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+
+            List<Product> productTable = new List<Product>();
+
+            productTable.Clear();
+            sqlCommand = new SqlCommand("SELECT * FROM [Product] WHERE Name = @NameFirst OR Name = @NameSecond", SqlConnection);
+            sqlCommand.Parameters.AddWithValue("NameFirst", TB_firstProduct.Text);
+            sqlCommand.Parameters.AddWithValue("NameSecond", TB_secondProduct.Text);
+            reader = await sqlCommand.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                productTable.Add(new Product()
+                {
+                    Id = reader["Id"].ToString(),
+                    Departament_id = reader["Departament_id"].ToString(),
+                    Name = reader["Name"].ToString(),
+                    Description = reader["Description"].ToString(),
+                    Color_id = reader["Color_id"].ToString(),
+                    Price = reader["Price"].ToString()
+                });
+            }
+            ProductTable.ItemsSource = productTable;
+            reader.Close();
+
+            SqlConnection.Close();
+        }
+
+        private async void ProductLikeName_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+
+            List<Product> productTable = new List<Product>();
+
+            productTable.Clear();
+            sqlCommand = new SqlCommand("SELECT * FROM [Product] WHERE Name LIKE @Name", SqlConnection);
+            sqlCommand.Parameters.AddWithValue("Name", TB_nameProductLike.Text + "%");
+            reader = await sqlCommand.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                productTable.Add(new Product()
+                {
+                    Id = reader["Id"].ToString(),
+                    Departament_id = reader["Departament_id"].ToString(),
+                    Name = reader["Name"].ToString(),
+                    Description = reader["Description"].ToString(),
+                    Color_id = reader["Color_id"].ToString(),
+                    Price = reader["Price"].ToString()
+                });
+            }
+            ProductTable.ItemsSource = productTable;
+            reader.Close();
+
+            SqlConnection.Close();
+        }
+
+        private async void doneBetweenPriceProduct_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+
+            List<Product> productTable = new List<Product>();
+
+            productTable.Clear();
+            sqlCommand = new SqlCommand("SELECT * FROM [Product] WHERE Price BETWEEN @fromPrice AND @toPrice", SqlConnection);
+            sqlCommand.Parameters.AddWithValue("fromPrice", TB_fromPriceProduct.Text);
+            sqlCommand.Parameters.AddWithValue("toPrice", TB_toPriceProduct.Text);
+            reader = await sqlCommand.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                productTable.Add(new Product()
+                {
+                    Id = reader["Id"].ToString(),
+                    Departament_id = reader["Departament_id"].ToString(),
+                    Name = reader["Name"].ToString(),
+                    Description = reader["Description"].ToString(),
+                    Color_id = reader["Color_id"].ToString(),
+                    Price = reader["Price"].ToString()
+                });
+            }
+            ProductTable.ItemsSource = productTable;
+            reader.Close();
+
             SqlConnection.Close();
         }
 
@@ -1562,6 +1683,36 @@ namespace CourseWork
             SqlConnection.Close();
         }
 
+        private async void DoneDistinctTypeComponent_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+
+            List<Component> componentTable = new List<Component>();
+
+            componentTable.Clear();
+            sqlCommand = new SqlCommand("SELECT DISTINCT(Type), Id, Name, Amount, Color_id, Storage_id FROM [Component]", SqlConnection);
+            reader = await sqlCommand.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                componentTable.Add(new Component()
+                {
+                    Id = reader["Id"].ToString(),
+                    Name = reader["Name"].ToString(),
+                    Amount = reader["Amount"].ToString(),
+                    Color_id = reader["Color_id"].ToString(),
+                    Type = reader["Type"].ToString(),
+                    Storage_id = reader["Storage_id"].ToString()
+                });
+            }
+            ComponentTable.ItemsSource = componentTable;
+            reader.Close();
+
+
+            SqlConnection.Close();
+        }
+
         //THE END#####################################################################
         private async Task DataInAllComboBox()
         {
@@ -1953,6 +2104,5 @@ namespace CourseWork
                 SqlConnection.Close();
             }
         }
-
     }
 }
