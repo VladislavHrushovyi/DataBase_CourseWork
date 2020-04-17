@@ -26,7 +26,13 @@ namespace CourseWork
         {
             try
             {
-                string connection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=FornitureManufacture;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+                string connection = @"Data Source=(localdb)\MSSQLLocalDB;
+                                    Initial Catalog=FornitureManufacture;
+                                    Integrated Security=True;
+                                    Connect Timeout=30;Encrypt=False;
+                                    TrustServerCertificate=False;
+                                    ApplicationIntent=ReadWrite;
+                                    MultiSubnetFailover=False";
 
                 SqlConnection = new SqlConnection(connection);
                 await DataInAllComboBox();
@@ -1290,7 +1296,14 @@ namespace CourseWork
 
         private void CB_chooseDirector_DropDownClosed(object sender, EventArgs e)
         {
-            globalID = GetIndexFromCombpBox(CB_chooseDirector.SelectedItem.ToString());
+            try
+            {
+                globalID = GetIndexFromCombpBox(CB_chooseDirector.SelectedItem.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         //THE END#####################################################################
@@ -1767,11 +1780,13 @@ namespace CourseWork
                 CB_personClient.Items.Clear();
                 CB_clientProductOrder.Items.Clear();
                 CB_clientOrderByAVG.Items.Clear();
+                CB_client.Items.Clear();
                 while (await reader.ReadAsync())
                 {
                     CB_personClient.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                     CB_clientProductOrder.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                     CB_clientOrderByAVG.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
+                    CB_client.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                 }
                 reader.Close();
 
@@ -2138,5 +2153,44 @@ namespace CourseWork
                 SqlConnection.Close();
             }
         }
+        //ORDER_CLIENT#################################################################
+        private async void CB_client_DropDownClosed(object sender, EventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            //try
+            //{
+
+                List<OrderByClient> temp = new List<OrderByClient>();
+                globalID = GetIndexFromCombpBox(CB_client.SelectedItem.ToString());
+                sqlCommand = new SqlCommand("SELECT Orders.Id, Orders.Product_id, Orders.Amount, Orders.Cost_order, " +
+                    " Orders.Client_id, Client.SecondName, Client.FirstName, Client.E_mail FROM [Orders]" +
+                    "INNER JOIN [Client] ON Orders.Client_id = @id AND Client.Id = @id", SqlConnection);
+                sqlCommand.Parameters.AddWithValue("id", globalID);
+                reader = await sqlCommand.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    temp.Add(new OrderByClient
+                    {
+                        OrderId = reader[0].ToString(),
+                        ProductId = reader[1].ToString(),
+                        Amount = reader[2].ToString(),
+                        CostOrder = reader[3].ToString(),
+                        ClientId = reader[4].ToString(),
+                        SecondName = reader[5].ToString(),
+                        FirstName = reader[6].ToString(),
+                        E_mail = reader[7].ToString()
+                    });
+                }
+                OrderByClient_Table.ItemsSource = temp;
+                SqlConnection.Close();
+           // }
+            //catch (Exception ex)
+            //{
+                //MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
+        }
+        //end##########################################################################
     }
 }

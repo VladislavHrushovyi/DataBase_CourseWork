@@ -17,16 +17,19 @@
                         <ColumnDefinition Width="26*"/>
                         <ColumnDefinition Width="943*"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid  HorizontalAlignment="Left" Height="342" VerticalAlignment="Top" Width="969" Margin="0,0,-0.2,0" Background="White" ColumnWidth="100" Grid.ColumnSpan="2">
+                    <DataGrid x:Name="OrderByClient_Table"  HorizontalAlignment="Left" Height="342" VerticalAlignment="Top" Width="969" Margin="0,0,-0.2,0" Background="White" ColumnWidth="100" Grid.ColumnSpan="2" AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Id}"  Header="Id Product"/>
-                            <DataGridTextColumn Binding="{Binding Name}"  Header="Name Product"/>
+                            <DataGridTextColumn Binding="{Binding OrderId}"  Header="Order ID"/>
+                            <DataGridTextColumn Binding="{Binding ProductId}"  Header="Product ID"/>
                             <DataGridTextColumn Binding="{Binding Amount}"  Header="Amount"/>
-                            <DataGridTextColumn Binding="{Binding Price}"  Header="Cost"/>
-                            <DataGridTextColumn Binding="{Binding Client_Name}"  Header="Client name"/>
+                            <DataGridTextColumn Binding="{Binding CostOrder}"  Header="Cost order"/>
+                            <DataGridTextColumn Binding="{Binding ClientId}"  Header="Client ID"/>
+                            <DataGridTextColumn Binding="{Binding SecondName}"  Header="Second name"/>
+                            <DataGridTextColumn Binding="{Binding FirstName}"  Header="First name"/>
+                            <DataGridTextColumn Binding="{Binding E_mail}"  Header="E-mail"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <ComboBox Text="Choose client" x:Name="CB_client" HorizontalAlignment="Left" Margin="289.4,347,0,0" VerticalAlignment="Top" Width="258" Grid.Column="1" Height="27"/>
+                    <ComboBox Text="Choose client" x:Name="CB_client" HorizontalAlignment="Left" Margin="289.4,347,0,0" VerticalAlignment="Top" Width="258" Grid.Column="1" Height="27" DropDownClosed="CB_client_DropDownClosed"/>
                     <Button Content="Choose" x:Name="ChoseSingle" HorizontalAlignment="Left" Margin="571.4,347,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.125,0.033" Height="27" Grid.Column="1" Click="ChooseSingle_Click"/>
                     <Button Content="Choose all" x:Name="chooseAll" HorizontalAlignment="Left" Margin="681.4,347,0,0" VerticalAlignment="Top" Width="75" Height="27" Grid.Column="1"/>
                     <Label Content="Choose client" Grid.Column="1" HorizontalAlignment="Left" Margin="202.4,348,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.557,0.07"/>

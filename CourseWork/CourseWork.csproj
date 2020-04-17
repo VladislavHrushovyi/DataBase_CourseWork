@@ -106,6 +106,7 @@
     <Compile Include="Departament.cs" />
     <Compile Include="DirectorInfo.cs" />
     <Compile Include="Directors.cs" />
+    <Compile Include="OrderByClient.cs" />
     <Compile Include="Orders.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="SomeAbstact.cs" />
