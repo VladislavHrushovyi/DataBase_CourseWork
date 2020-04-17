@@ -356,6 +356,24 @@ namespace CourseWork
             }
             SqlConnection.Close();
         }
+
+        private async void CB_clientOrderByAVG_DropDownClosed(object sender, EventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlCommand sqlCommand;
+            try
+            {
+                globalID = GetIndexFromCombpBox(CB_clientOrderByAVG.SelectedItem.ToString());
+                sqlCommand = new SqlCommand("SELECT AVG(Cost_Order) FROM [Orders] WHERE Client_id = " + globalID, SqlConnection);
+                AVG_valueByOrderClient.Content = await sqlCommand.ExecuteScalarAsync();
+
+                SqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         //КІНЕЦЬ#####################################################################
 
         //ВСЕ ШО ЗВ'ЯЗАНО З CLIENT_TABLE##############################################
@@ -1012,6 +1030,20 @@ namespace CourseWork
             }
             ProductTable.ItemsSource = productTable;
             reader.Close();
+
+            SqlConnection.Close();
+        }
+
+        private async void MIN_MAX_priduct_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlCommand sqlCommand;
+
+            sqlCommand = new SqlCommand("SELECT MAX(Price) FROM [Product]", SqlConnection);
+            Max_priceProduct.Content = await sqlCommand.ExecuteScalarAsync();
+
+            sqlCommand = new SqlCommand("SELECT Min(Price) FROM [Product]", SqlConnection);
+            Min_priceProduct.Content = await sqlCommand.ExecuteScalarAsync();
 
             SqlConnection.Close();
         }
@@ -1734,10 +1766,12 @@ namespace CourseWork
                 reader = await sqlCommand.ExecuteReaderAsync();
                 CB_personClient.Items.Clear();
                 CB_clientProductOrder.Items.Clear();
+                CB_clientOrderByAVG.Items.Clear();
                 while (await reader.ReadAsync())
                 {
                     CB_personClient.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                     CB_clientProductOrder.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
+                    CB_clientOrderByAVG.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                 }
                 reader.Close();
 

@@ -85,6 +85,10 @@
                                     <Label Content="And" Grid.Column="1" HorizontalAlignment="Left" Margin="690.6,30,0,0" VerticalAlignment="Top"/>
                                     <TextBox x:Name="TB_costToOrder" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="727.6,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="61"/>
                                     <Button x:Name="DoneSelectCostrOrder_BTN" Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="804.6,30,0,0" VerticalAlignment="Top" Width="75" Height="25" Click="DoneSelectCostrOrder_BTN_Click"/>
+                                    <Label Content="AVG cost order by client --&gt;" Grid.Column="1" HorizontalAlignment="Left" Margin="555.6,84,0,0" VerticalAlignment="Top"/>
+                                    <ComboBox x:Name="CB_clientOrderByAVG" Grid.Column="1" HorizontalAlignment="Left" Margin="727.6,87,0,0" VerticalAlignment="Top" Width="152" DropDownClosed="CB_clientOrderByAVG_DropDownClosed"/>
+                                    <Label Content="AVG ===" Grid.Column="1" HorizontalAlignment="Left" Margin="555.6,115,0,0" VerticalAlignment="Top" FontSize="16" Background="#00000000"/>
+                                    <Label x:Name="AVG_valueByOrderClient" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="637.6,115,0,0" VerticalAlignment="Top" FontSize="16"/>
                                 </Grid>
                             </Grid>
                         </TabItem>
@@ -248,7 +252,7 @@
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="458.6,303,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AutomationProperties.Name="TB_priceProduct" x:Name="TB_priceProduct"/>
                                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="458.6,266,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="3.33,0.857" AutomationProperties.Name="CB_departamentProduct" x:Name="CB_departamentProduct"/>
                                 <Button Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="366.6,340,0,0" VerticalAlignment="Top" Width="212" Height="29" AutomationProperties.Name="BTN_doneProduct" Click="ProductDone_BTN"/>
-                                <Rectangle Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="372" Margin="628.6,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="306"/>
+                                <Rectangle Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="372" Margin="628.6,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="306"/>
                                 <Label Content="SELECT" Grid.Column="1" HorizontalAlignment="Left" Margin="628.6,24,0,0" VerticalAlignment="Top"/>
                                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="676.6,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" x:Name="TB_firstProduct"/>
                                 <Label Content="OR" Grid.Column="1" HorizontalAlignment="Left" Margin="790.6,24,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.5,0.469"/>
@@ -262,6 +266,11 @@
                                 <Label Content="To" Grid.Column="1" HorizontalAlignment="Left" Margin="780.6,165,0,0" VerticalAlignment="Top"/>
                                 <TextBox x:Name="TB_toPriceProduct" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="802.6,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="51"/>
                                 <Button x:Name="doneBetweenPriceProduct_BTN" Content="DONE" Grid.Column="1" HorizontalAlignment="Left" Margin="858.6,165,0,0" VerticalAlignment="Top" Width="56" Height="26" Click="doneBetweenPriceProduct_BTN_Click"/>
+                                <Label Content="MAX Price value --" Grid.Column="1" HorizontalAlignment="Left" Margin="638.6,211,0,0" VerticalAlignment="Top" FontSize="16" Background="#00000000" FontStyle="Italic" FontWeight="Bold"/>
+                                <Label x:Name="Max_priceProduct" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="788.6,214,0,0" VerticalAlignment="Top" FontSize="16" FontStyle="Italic" FontWeight="Bold"/>
+                                <Label Content="MIN Price value --" Grid.Column="1" HorizontalAlignment="Left" Margin="638.6,271,0,0" VerticalAlignment="Top" FontSize="16" Background="#00000000" FontStyle="Italic" FontWeight="Bold"/>
+                                <Label x:Name="Min_priceProduct" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="788.6,274,0,0" VerticalAlignment="Top" FontSize="16" FontStyle="Italic" FontWeight="Bold"/>
+                                <Button x:Name="MIN_MAX_priduct_BTN" Content="MAX/MIN" Grid.Column="1" HorizontalAlignment="Left" Margin="724.6,308,0,0" VerticalAlignment="Top" Width="137" Height="37" Click="MIN_MAX_priduct_BTN_Click"/>
                             </Grid>
                         </TabItem>
                         <TabItem Header="Workers">
