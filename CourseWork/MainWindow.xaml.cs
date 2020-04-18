@@ -1796,12 +1796,16 @@ namespace CourseWork
                 CB_chooseDepartament.Items.Clear();
                 CB_departamentWorker.Items.Clear();
                 CB_departamentDirector.Items.Clear();
+                CB_DepartamentOnDirector.Items.Clear();
+                CB_Departament.Items.Clear();
                 while (await reader.ReadAsync())
                 {
                     CB_chooseDepartament.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                     CB_departamentProduct.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                     CB_departamentWorker.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                     CB_departamentDirector.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
+                    CB_Departament.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
+                    CB_DepartamentOnDirector.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                 }
                 reader.Close();
 
@@ -2227,5 +2231,154 @@ namespace CourseWork
             }
         }
         //end##########################################################################
+
+        //DEPARTAMENT_WORKER###########################################################
+        private async void CB_Departament_DropDownClosed(object sender, EventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            try
+            {
+
+                List<WorkerByDepartament> temp = new List<WorkerByDepartament>();
+                globalID = GetIndexFromCombpBox(CB_Departament.SelectedItem.ToString());
+                sqlCommand = new SqlCommand("SELECT Departament.Id, Departament.Name, WorkerInfo.SecondName," +
+                    "WorkerInfo.FirstName, Workers.Position, Workers.Id FROM [Departament] " +
+                    "LEFT JOIN [Workers] ON Workers.Departament_id = @id " +
+                    "LEFT JOIN [WorkerInfo] ON Workers.WorkerInfo_id = WorkerInfo.Id " +
+                    "WHERE Departament.Id = @id ", SqlConnection);
+                sqlCommand.Parameters.AddWithValue("id", globalID);
+                reader = await sqlCommand.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    temp.Add(new WorkerByDepartament
+                    {
+                        DepartamentId = reader[0].ToString(),
+                        DepartamentName = reader[1].ToString(),
+                        WorkerId = reader[5].ToString(),
+                        SecondName = reader[2].ToString(),
+                        FirstName = reader[3].ToString(),
+                        Position = reader[4].ToString()
+                    });
+                }
+                WorkerByDepartament_Table.ItemsSource = temp;
+                SqlConnection.Close();
+           }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void AllWorkerByDepartament_Click(object sender, RoutedEventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            try
+            {
+
+                List<WorkerByDepartament> temp = new List<WorkerByDepartament>();
+                sqlCommand = new SqlCommand("SELECT Departament.Id, Departament.Name, WorkerInfo.SecondName," +
+                    "WorkerInfo.FirstName, Workers.Position, Workers.Id FROM [Departament] " +
+                    "LEFT JOIN [Workers] ON Workers.Departament_id = Departament.Id " +
+                    "LEFT JOIN [WorkerInfo] ON Workers.WorkerInfo_id = WorkerInfo.Id ", SqlConnection);
+                reader = await sqlCommand.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    temp.Add(new WorkerByDepartament
+                    {
+                        DepartamentId = reader[0].ToString(),
+                        DepartamentName = reader[1].ToString(),
+                        WorkerId = reader[5].ToString(),
+                        SecondName = reader[2].ToString(),
+                        FirstName = reader[3].ToString(),
+                        Position = reader[4].ToString()
+                    });
+                }
+                WorkerByDepartament_Table.ItemsSource = temp;
+                SqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        //END##########################################################################
+
+        // Director_Departament########################################################
+        private async void CB_DepartamentOnDirector_DropDownClosed(object sender, EventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            try
+            {
+
+                List<DirectorByDepartament> temp = new List<DirectorByDepartament>();
+                globalID = GetIndexFromCombpBox(CB_DepartamentOnDirector.SelectedItem.ToString());
+                sqlCommand = new SqlCommand("SELECT Departament.Id, Departament.Name, DirectorInfo.SecondName," +
+                    "DirectorInfo.FirstName, Directors.Id FROM [Departament] " +
+                    "LEFT JOIN [Directors] ON Directors.Departament_id = @id " +
+                    "LEFT JOIN [DirectorInfo] ON Directors.DirectorInfo_id = DirectorInfo.Id " +
+                    "WHERE Departament.Id = @id ", SqlConnection);
+                sqlCommand.Parameters.AddWithValue("id", globalID);
+                reader = await sqlCommand.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    temp.Add(new DirectorByDepartament
+                    {
+                        DepartamentId = reader[0].ToString(),
+                        DepartamentName = reader[1].ToString(),
+                        DirectorId = reader[4].ToString(),
+                        SecondName = reader[2].ToString(),
+                        FirstName = reader[3].ToString(),
+                    });
+                }
+                DirectorByDepartament_Table.ItemsSource = temp;
+                SqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void AllDirectorByDepartament_Click(object sender, RoutedEventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            try
+            {
+
+                List<DirectorByDepartament> temp = new List<DirectorByDepartament>();
+                sqlCommand = new SqlCommand("SELECT Departament.Id, Departament.Name, DirectorInfo.SecondName," +
+                    "DirectorInfo.FirstName, Directors.Id FROM [Departament] " +
+                    "RIGHT JOIN [Directors] ON Directors.Departament_id = Departament.Id " +
+                    "RIGHT JOIN [DirectorInfo] ON Directors.DirectorInfo_id = DirectorInfo.Id ", SqlConnection);
+                reader = await sqlCommand.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    temp.Add(new DirectorByDepartament
+                    {
+                        DepartamentId = reader[0].ToString(),
+                        DepartamentName = reader[1].ToString(),
+                        DirectorId = reader[4].ToString(),
+                        SecondName = reader[2].ToString(),
+                        FirstName = reader[3].ToString(),
+                    });
+                }
+                DirectorByDepartament_Table.ItemsSource = temp;
+                SqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        //END##########################################################################
     }
 }

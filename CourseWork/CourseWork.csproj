@@ -104,6 +104,7 @@
     <Compile Include="Client.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Departament.cs" />
+    <Compile Include="DirectorByDepartament.cs" />
     <Compile Include="DirectorInfo.cs" />
     <Compile Include="Directors.cs" />
     <Compile Include="OrderByClient.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Product.cs" />
     <Compile Include="SomeAbstact.cs" />
     <Compile Include="Storage.cs" />
+    <Compile Include="WorkerByDepartament.cs" />
     <Compile Include="WorkerInfo.cs" />
     <Compile Include="Workers.cs" />
     <Page Include="MainWindow.xaml">

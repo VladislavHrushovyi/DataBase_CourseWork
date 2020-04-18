@@ -34,6 +34,47 @@
                     <Label Content="Choose client" Grid.Column="1" HorizontalAlignment="Left" Margin="202.4,348,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.557,0.07"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="Worker by departament">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="26*"/>
+                        <ColumnDefinition Width="943*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid x:Name="WorkerByDepartament_Table"  HorizontalAlignment="Left" Height="342" VerticalAlignment="Top" Width="969" Margin="0,0,-0.2,0" Background="White" ColumnWidth="100" Grid.ColumnSpan="2" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding DepartamentId}"  Header="Departament ID"/>
+                            <DataGridTextColumn Binding="{Binding DepartamentName}"  Header="Name departament"/>
+                            <DataGridTextColumn Binding="{Binding WorkerId}"  Header="Worker id"/>
+                            <DataGridTextColumn Binding="{Binding SecondName}"  Header="Second name"/>
+                            <DataGridTextColumn Binding="{Binding FirstName}"  Header="First name"/>
+                            <DataGridTextColumn Binding="{Binding Position}"  Header="Position"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <ComboBox Text="Choose client" x:Name="CB_Departament" HorizontalAlignment="Left" Margin="289.4,347,0,0" VerticalAlignment="Top" Width="258" Grid.Column="1" Height="27" DropDownClosed="CB_Departament_DropDownClosed"/>
+                    <Button Content="Choose all" x:Name="AllWorkerByDepartament" HorizontalAlignment="Left" Margin="590.6,348,0,0" VerticalAlignment="Top" Width="75" Height="27" Grid.Column="1" Click="AllWorkerByDepartament_Click"/>
+                    <Label Content="Choose departament" Grid.Column="1" HorizontalAlignment="Left" Margin="167.6,347,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.557,0.07"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Director by departament">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="26*"/>
+                        <ColumnDefinition Width="943*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid x:Name="DirectorByDepartament_Table"  HorizontalAlignment="Left" Height="342" VerticalAlignment="Top" Width="969" Margin="0,0,-0.2,0" Background="White" ColumnWidth="100" Grid.ColumnSpan="2" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding DepartamentId}"  Header="Departament ID"/>
+                            <DataGridTextColumn Binding="{Binding DepartamentName}"  Header="Name departament"/>
+                            <DataGridTextColumn Binding="{Binding DirectorId}"  Header="Director id"/>
+                            <DataGridTextColumn Binding="{Binding SecondName}"  Header="Second name"/>
+                            <DataGridTextColumn Binding="{Binding FirstName}"  Header="First name"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <ComboBox Text="Choose departament" x:Name="CB_DepartamentOnDirector" HorizontalAlignment="Left" Margin="289.4,347,0,0" VerticalAlignment="Top" Width="258" Grid.Column="1" Height="27" DropDownClosed="CB_DepartamentOnDirector_DropDownClosed"/>
+                    <Button Content="Choose all" x:Name="AllDirectorByDepartament" HorizontalAlignment="Left" Margin="590.6,348,0,0" VerticalAlignment="Top" Width="75" Height="27" Grid.Column="1" Click="AllDirectorByDepartament_Click"/>
+                    <Label Content="Choose departament" Grid.Column="1" HorizontalAlignment="Left" Margin="167.6,347,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.557,0.07"/>
+                </Grid>
+            </TabItem>
             <TabItem Header="Tables">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
