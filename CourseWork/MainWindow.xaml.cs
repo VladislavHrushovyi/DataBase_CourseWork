@@ -1737,7 +1737,7 @@ namespace CourseWork
             List<Component> componentTable = new List<Component>();
 
             componentTable.Clear();
-            sqlCommand = new SqlCommand("SELECT DISTINCT(Type), Id, Name, Amount, Color_id, Storage_id FROM [Component]", SqlConnection);
+            sqlCommand = new SqlCommand("SELECT DISTINCT Type, Id, Name, Amount, Color_id, Storage_id FROM [Component]", SqlConnection);
             reader = await sqlCommand.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -2159,8 +2159,8 @@ namespace CourseWork
             await SqlConnection.OpenAsync();
             SqlDataReader reader;
             SqlCommand sqlCommand;
-            //try
-            //{
+            try
+            {
 
                 List<OrderByClient> temp = new List<OrderByClient>();
                 globalID = GetIndexFromCombpBox(CB_client.SelectedItem.ToString());
@@ -2185,11 +2185,46 @@ namespace CourseWork
                 }
                 OrderByClient_Table.ItemsSource = temp;
                 SqlConnection.Close();
-           // }
-            //catch (Exception ex)
-            //{
-                //MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void AllOrderByClient_Click(object sender, RoutedEventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlDataReader reader;
+            SqlCommand sqlCommand;
+            try
+            {
+                List<OrderByClient> temp = new List<OrderByClient>();
+                sqlCommand = new SqlCommand("SELECT Orders.Id, Orders.Product_id, Orders.Amount, Orders.Cost_order, " +
+                    " Orders.Client_id, Client.SecondName, Client.FirstName, Client.E_mail FROM [Orders]" +
+                    "INNER JOIN [Client] ON Client.Id = Orders.Client_id ", SqlConnection);
+                reader = await sqlCommand.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    temp.Add(new OrderByClient
+                    {
+                        OrderId = reader[0].ToString(),
+                        ProductId = reader[1].ToString(),
+                        Amount = reader[2].ToString(),
+                        CostOrder = reader[3].ToString(),
+                        ClientId = reader[4].ToString(),
+                        SecondName = reader[5].ToString(),
+                        FirstName = reader[6].ToString(),
+                        E_mail = reader[7].ToString()
+                    });
+                }
+                OrderByClient_Table.ItemsSource = temp;
+                SqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         //end##########################################################################
     }
