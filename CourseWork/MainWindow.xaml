@@ -34,6 +34,36 @@
                     <Label Content="Choose client" Grid.Column="1" HorizontalAlignment="Left" Margin="202.4,348,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.557,0.07"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="Registration and order form">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="26*"/>
+                        <ColumnDefinition Width="943*"/>
+                    </Grid.ColumnDefinitions>
+                    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="402" Margin="10,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="398" Grid.ColumnSpan="2"/>
+                    <Label Content="Registration client" Grid.Column="1" HorizontalAlignment="Left" Margin="102.6,10,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" FontStyle="Italic"/>
+                    <Label Content="Fitsrt name:" HorizontalAlignment="Left" Margin="26,63,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="TB_FirstNameRegistrtion" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="91.6,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="242"/>
+                    <Label Content="Last name:" HorizontalAlignment="Left" Margin="26,122,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="TB_LastNameRegistrtion" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="92.6,126,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="242"/>
+                    <Label Content="Second name:" HorizontalAlignment="Left" Margin="26,91,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="TB_SecondNameRegistrtion" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="91.6,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="242"/>
+                    <Label Content="E-mail:" HorizontalAlignment="Left" Margin="24,203,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="TB_EmailRegistrtion" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="91.6,207,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="242"/>
+                    <Label Content="Phone:" HorizontalAlignment="Left" Margin="25,175,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="TB_PhoneRegistrtion" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="91.6,179,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="242"/>
+                    <Button x:Name="RegistrationClient_BTN" Content="Registration" Grid.Column="1" HorizontalAlignment="Left" Margin="135.6,280,0,0" VerticalAlignment="Top" Width="114" Height="36" FontSize="16" Click="RegistrationClient_BTN_Click"/>
+                    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="402" Margin="504.6,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="398" Grid.Column="1"/>
+                    <Label Content="Order" Grid.Column="1" HorizontalAlignment="Left" Margin="682.6,10,0,0" VerticalAlignment="Top" FontSize="16" FontStyle="Italic" FontWeight="Bold"/>
+                    <Label Content="Choose client: " Grid.Column="1" HorizontalAlignment="Left" Margin="513.6,64,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Choose product: " Grid.Column="1" HorizontalAlignment="Left" Margin="513.6,108,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Amount: " Grid.Column="1" HorizontalAlignment="Left" Margin="513.6,161,0,0" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="CB_chooseClientOrderForm" Grid.Column="1" HorizontalAlignment="Left" Margin="659.6,67,0,0" VerticalAlignment="Top" Width="183"/>
+                    <ComboBox x:Name="CB_chooseProductForm" Grid.Column="1" HorizontalAlignment="Left" Margin="659.6,108,0,0" VerticalAlignment="Top" Width="183"/>
+                    <Button x:Name="AddOrderForm_BTN" Content="ADD" Grid.Column="1" HorizontalAlignment="Left" Margin="659.6,247,0,0" VerticalAlignment="Top" Width="120" Height="37" FontSize="16" Click="AddOrderForm_BTN_Click"/>
+                    <TextBox x:Name="TB_AmountForm" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="659.6,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="183"/>
+                </Grid>
+            </TabItem>
             <TabItem Header="Worker by departament">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
@@ -132,6 +162,9 @@
                                     <ComboBox x:Name="CB_clientOrderByAVG" Grid.Column="1" HorizontalAlignment="Left" Margin="727.6,87,0,0" VerticalAlignment="Top" Width="152" DropDownClosed="CB_clientOrderByAVG_DropDownClosed"/>
                                     <Label Content="AVG ===" Grid.Column="1" HorizontalAlignment="Left" Margin="555.6,115,0,0" VerticalAlignment="Top" FontSize="16" Background="#00000000"/>
                                     <Label x:Name="AVG_valueByOrderClient" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="637.6,115,0,0" VerticalAlignment="Top" FontSize="16"/>
+                                    <Label Content="Count orders with product ---&gt;" Grid.Column="1" HorizontalAlignment="Left" Margin="555.6,177,0,0" VerticalAlignment="Top" FontSize="16"/>
+                                    <ComboBox x:Name="CB_productForCountOrder" Grid.Column="1" HorizontalAlignment="Left" Margin="790.6,177,0,0" VerticalAlignment="Top" Width="134" Height="32" FontSize="14" DropDownClosed="CB_productForCountOrder_DropDownClosed"/>
+                                    <Label x:Name="InfoCountOrder" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="555.6,216,0,0" VerticalAlignment="Top" FontSize="16" AutomationProperties.Name="InfoCountOrder"/>
                                 </Grid>
                             </Grid>
                         </TabItem>

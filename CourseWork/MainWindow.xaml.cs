@@ -194,7 +194,7 @@ namespace CourseWork
                                                     "VALUES(@Product_id, @Amount, @Cost_Order, @Client_id)", SqlConnection);
                     sqlCommand.Parameters.AddWithValue("Product_id", Convert.ToInt32(GetIndexFromCombpBox(CB_productOrder.SelectedItem.ToString())));
                     sqlCommand.Parameters.AddWithValue("Amount", TB_amountProductOrder.Text);
-                    sqlCommand.Parameters.AddWithValue("Cost_Order", CalculateOrder());
+                    sqlCommand.Parameters.AddWithValue("Cost_Order", CalculateOrder(CB_productOrder.SelectedItem.ToString(), TB_amountProductOrder.Text));
                     sqlCommand.Parameters.AddWithValue("Client_id", GetIndexFromCombpBox(CB_clientProductOrder.SelectedItem.ToString()));
 
                     await SqlConnection.OpenAsync();
@@ -236,7 +236,7 @@ namespace CourseWork
 
                     sqlCommand.Parameters.AddWithValue("Product_id", GetIndexFromCombpBox(CB_productOrder.SelectedItem.ToString()));
                     sqlCommand.Parameters.AddWithValue("Amount", TB_amountProductOrder.Text);
-                    sqlCommand.Parameters.AddWithValue("Cost_Order", CalculateOrder().ToString());
+                    sqlCommand.Parameters.AddWithValue("Cost_Order", CalculateOrder(CB_productOrder.SelectedItem.ToString(), TB_amountProductOrder.Text).ToString());
                     sqlCommand.Parameters.AddWithValue("Client_id", GetIndexFromCombpBox(CB_clientProductOrder.SelectedItem.ToString()));
                     sqlCommand.Parameters.AddWithValue("Id", globalID);
                     await SqlConnection.OpenAsync();
@@ -261,15 +261,15 @@ namespace CourseWork
                 MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-        private double CalculateOrder()
+        private double CalculateOrder(string product, string amount_)
         {
 
             SqlConnection.OpenAsync();
             SqlDataReader reader;
             SqlCommand sqlCommand;
-            int idProduct = Convert.ToInt32(GetIndexFromCombpBox(CB_productOrder.Text));
+            int idProduct = Convert.ToInt32(GetIndexFromCombpBox(product));
             double price = 0;
-            int amount = Convert.ToInt32(TB_amountProductOrder.Text);
+            int amount = Convert.ToInt32(amount_);
 
             sqlCommand = new SqlCommand("SELECT Price FROM [Product] WHERE Id =" + idProduct.ToString(), SqlConnection);
             reader = sqlCommand.ExecuteReader();
@@ -372,6 +372,24 @@ namespace CourseWork
                 globalID = GetIndexFromCombpBox(CB_clientOrderByAVG.SelectedItem.ToString());
                 sqlCommand = new SqlCommand("SELECT AVG(Cost_Order) FROM [Orders] WHERE Client_id = " + globalID, SqlConnection);
                 AVG_valueByOrderClient.Content = await sqlCommand.ExecuteScalarAsync();
+
+                SqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void CB_productForCountOrder_DropDownClosed(object sender, EventArgs e)
+        {
+            await SqlConnection.OpenAsync();
+            SqlCommand sqlCommand;
+            try
+            {
+                globalID = GetIndexFromCombpBox(CB_productForCountOrder.SelectedItem.ToString());
+                sqlCommand = new SqlCommand("SELECT COUNT(Product_id) FROM [Orders] WHERE Product_id = " + globalID, SqlConnection);
+                InfoCountOrder.Content = "Count = " + await sqlCommand.ExecuteScalarAsync();
 
                 SqlConnection.Close();
             }
@@ -1781,12 +1799,14 @@ namespace CourseWork
                 CB_clientProductOrder.Items.Clear();
                 CB_clientOrderByAVG.Items.Clear();
                 CB_client.Items.Clear();
+                CB_chooseClientOrderForm.Items.Clear();
                 while (await reader.ReadAsync())
                 {
                     CB_personClient.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                     CB_clientProductOrder.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                     CB_clientOrderByAVG.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                     CB_client.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
+                    CB_chooseClientOrderForm.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                 }
                 reader.Close();
 
@@ -1824,10 +1844,14 @@ namespace CourseWork
                 reader = await sqlCommand.ExecuteReaderAsync();
                 CB_selectProduct.Items.Clear();
                 CB_productOrder.Items.Clear();
+                CB_productForCountOrder.Items.Clear();
+                CB_chooseProductForm.Items.Clear();
                 while (await reader.ReadAsync())
                 {
                     CB_selectProduct.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                     CB_productOrder.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
+                    CB_productForCountOrder.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
+                    CB_chooseProductForm.Items.Add(reader[0].ToString() + " " + reader[1].ToString());
                 }
                 reader.Close();
 
@@ -2377,6 +2401,42 @@ namespace CourseWork
             {
                 MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private async void RegistrationClient_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("INSERT INTO [Client] (FirstName,SecondName,LastName,Phone,E_mail)" +
+                                            "VALUES(@FirstName,@SecondName,@LastName,@Phone,@E_mail)", SqlConnection);
+            sqlCommand.Parameters.AddWithValue("FirstName", TB_FirstNameRegistrtion.Text);
+            sqlCommand.Parameters.AddWithValue("SecondName", TB_SecondNameRegistrtion.Text);
+            sqlCommand.Parameters.AddWithValue("LastName", TB_LastNameRegistrtion.Text);
+            sqlCommand.Parameters.AddWithValue("Phone", TB_PhoneRegistrtion.Text);
+            sqlCommand.Parameters.AddWithValue("E_mail", TB_EmailRegistrtion.Text);
+
+            await SqlConnection.OpenAsync();
+            await sqlCommand.ExecuteNonQueryAsync();
+            SqlConnection.Close();
+
+            await DataInAllComboBox();
+        }
+
+        private async void AddOrderForm_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("INSERT INTO [Orders] (Product_id, Amount,Cost_Order, Client_id)" +
+                                            "VALUES(@Product_id, @Amount, @Cost_Order, @Client_id)", SqlConnection);
+            sqlCommand.Parameters.AddWithValue("Product_id", Convert.ToInt32(GetIndexFromCombpBox(CB_chooseProductForm.SelectedItem.ToString())));
+            sqlCommand.Parameters.AddWithValue("Amount", TB_AmountForm.Text);
+            sqlCommand.Parameters.AddWithValue("Cost_Order", CalculateOrder(CB_chooseProductForm.SelectedItem.ToString(), TB_AmountForm.Text));
+            sqlCommand.Parameters.AddWithValue("Client_id", GetIndexFromCombpBox(CB_chooseClientOrderForm.SelectedItem.ToString()));
+
+            await SqlConnection.OpenAsync();
+            await sqlCommand.ExecuteNonQueryAsync();
+            SqlConnection.Close();
+
+            await RefreshOrderTable();
+            await DataInAllComboBox();
         }
 
         //END##########################################################################

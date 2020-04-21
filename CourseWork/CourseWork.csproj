@@ -107,6 +107,11 @@
     <Compile Include="DirectorByDepartament.cs" />
     <Compile Include="DirectorInfo.cs" />
     <Compile Include="Directors.cs" />
+    <Compile Include="FornitureManufactureDBDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FornitureManufactureDBDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="OrderByClient.cs" />
     <Compile Include="Orders.cs" />
     <Compile Include="Product.cs" />
@@ -124,11 +129,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Colors.cs" />
-    <Compile Include="FornitureManufactureDBDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FornitureManufactureDBDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
